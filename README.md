@@ -10,6 +10,8 @@ Available for
 
 ## Screenshots
 
+**IMPORTANT:** Check github for screenshots
+
 ![Demo 1](/screenshots/show1.gif)
 
 **NOTE:** Video player doesn't work on IOS Simulators

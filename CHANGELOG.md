@@ -7,3 +7,7 @@
 
 ## 0.0.1+1
 * Dependencies fixed
+
+## 0.0.1+2
+* Health suggestions - FIXED
+* Document updated
