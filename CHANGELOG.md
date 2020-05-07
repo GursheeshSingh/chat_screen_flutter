@@ -4,3 +4,6 @@
 * Send photos
 * Send Videos
 * For Cloud firestore and Parse Server
+
+## 0.0.1+1
+* Dependencies fixed
