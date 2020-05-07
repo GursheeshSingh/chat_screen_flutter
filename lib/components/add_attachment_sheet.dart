@@ -25,7 +25,11 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
   _buildHeading(String text) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.title,
+      style: TextStyle(
+        fontFamily: kFontFamily,
+        fontSize: 30,
+        color: kCoolBlack,
+      ),
     );
   }
 
@@ -80,7 +84,11 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
             SizedBox(width: 8),
             Text(
               optionName,
-              style: Theme.of(context).textTheme.display1,
+              style: TextStyle(
+                fontFamily: kFontFamily,
+                color: kCoolBlack,
+                fontSize: 18,
+              ),
             )
           ],
         ),

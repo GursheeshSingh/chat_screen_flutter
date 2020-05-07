@@ -161,7 +161,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       onChanged: (value) {
                         messageText = value;
                       },
-                      style: Theme.of(context).textTheme.display1,
+                      style: TextStyle(
+                        fontFamily: kFontFamily,
+                        color: kCoolBlack,
+                        fontSize: 18,
+                      ),
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),

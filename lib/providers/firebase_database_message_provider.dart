@@ -71,6 +71,7 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
 
   @override
   Future<List<Message>> fetchOldMessages() async {
+    return [];
 //    try {
 //      QuerySnapshot snapshot = await firestore
 //          .collection(className)

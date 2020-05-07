@@ -95,7 +95,7 @@ final FirebaseApp firebaseApp = await FirebaseApp.configure(
 
 ## How to open group chat
 
-    key.currentState.push(
+    Navigator.push(
       MaterialPageRoute(
         builder: (context) => ChatScreen(
           messageProvider: CloudFirestoreMessageProvider(
