@@ -31,7 +31,7 @@ class ChatScreen extends StatefulWidget {
     @required this.messageProvider,
     @required this.currentUserId,
     @required this.currentUserName,
-    @required this.currentUserProfilePicture,
+    this.currentUserProfilePicture,
   });
 
   @override
