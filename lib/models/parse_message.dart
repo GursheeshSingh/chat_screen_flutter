@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:chatscreen/models/message.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
+import 'message.dart';
 import 'message_status.dart';
 
 class ParseMessage extends ParseObject implements ParseCloneable, Message {

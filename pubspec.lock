@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "1.0.5"
   cached_network_image:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: cached_network_image
       url: "https://pub.dartlang.org"
@@ -51,7 +51,7 @@ packages:
     source: hosted
     version: "1.0.1"
   cloud_firestore:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
@@ -135,7 +135,7 @@ packages:
     source: hosted
     version: "7.3.0"
   firebase_core:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
@@ -156,14 +156,14 @@ packages:
     source: hosted
     version: "0.1.1+2"
   firebase_database:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_database
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.5"
   firebase_storage:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_storage
       url: "https://pub.dartlang.org"
@@ -182,7 +182,7 @@ packages:
     source: hosted
     version: "1.2.2"
   flutter_icons:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_icons
       url: "https://pub.dartlang.org"
@@ -227,7 +227,7 @@ packages:
     source: hosted
     version: "2.1.4"
   image_picker:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
@@ -269,7 +269,7 @@ packages:
     source: hosted
     version: "0.4.0+17"
   parse_server_sdk:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: parse_server_sdk
       url: "https://pub.dartlang.org"
@@ -311,7 +311,7 @@ packages:
     source: hosted
     version: "1.8.0+1"
   permission_handler:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: permission_handler
       url: "https://pub.dartlang.org"
@@ -332,7 +332,7 @@ packages:
     source: hosted
     version: "2.4.0"
   photo_view:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: photo_view
       url: "https://pub.dartlang.org"
@@ -353,7 +353,7 @@ packages:
     source: hosted
     version: "1.0.2"
   pull_to_refresh:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: pull_to_refresh
       url: "https://pub.dartlang.org"
@@ -409,7 +409,7 @@ packages:
     source: hosted
     version: "0.1.2+4"
   shimmer:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shimmer
       url: "https://pub.dartlang.org"
@@ -491,7 +491,7 @@ packages:
     source: hosted
     version: "1.1.6"
   uuid:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.dartlang.org"
@@ -505,7 +505,7 @@ packages:
     source: hosted
     version: "2.0.8"
   video_player:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: video_player
       url: "https://pub.dartlang.org"
@@ -526,7 +526,7 @@ packages:
     source: hosted
     version: "0.1.2+1"
   video_thumbnail:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: video_thumbnail
       url: "https://pub.dartlang.org"

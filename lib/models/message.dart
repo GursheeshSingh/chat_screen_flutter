@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:chatscreen/models/message_status.dart';
+import 'message_status.dart';
 
 abstract class Message {
   Message();

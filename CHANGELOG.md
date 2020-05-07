@@ -1,3 +1,6 @@
-## [0.0.1] - TODO: Add release date.
-
-* TODO: Describe initial release.
+## 0.0.1 - 7 May 2020
+* Basic version
+* Send Text messages
+* Send photos
+* Send Videos
+* For Cloud firestore and Parse Server

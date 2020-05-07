@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:chatscreen/models/message.dart';
-import 'package:chatscreen/models/message_status.dart';
+import 'message.dart';
+import 'message_status.dart';
 
 class FirebaseMessage implements Message {
   Map<String, dynamic> data = Map();
