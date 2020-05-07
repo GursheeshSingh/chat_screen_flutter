@@ -116,12 +116,10 @@ final FirebaseApp firebaseApp = await FirebaseApp.configure(
 
 * In Parse Server
 
-![Example index](/screenshots/cloud_firestore_snapshot.png)
+![Example index](/screenshots/parse_server_mongodb_snapshot.png)
 
 * In cloud firestore
 
-![Example index](/screenshots/parse_server_mongodb_snapshot.png)
-
-
+![Example index](/screenshots/cloud_firestore_snapshot.png)
 
 
