@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatscreen/models/content_type.dart';
 import 'package:chatscreen/models/message.dart';
 import 'package:chatscreen/models/parse_message.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -50,6 +51,8 @@ class ParseServerMessageProvider implements MessageProvider {
 
         for (ParseMessage message in response.results) {
           messages.add(message);
+          print('In Initial messages');
+          print(response.results);
         }
 
         newestMessageCreatedAt = messages[0].createdAt;
@@ -122,6 +125,7 @@ class ParseServerMessageProvider implements MessageProvider {
 
       Message message = ParseMessage(className);
       message.fromId = messageObject.get<String>("from");
+      message.fromName = messageObject.get<String>("fromName");
       message.contentType = messageObject.get<String>("contentType");
       if (message.contentType == ContentType.text.toString()) {
         message.contentText = messageObject.get<String>("contentText");
