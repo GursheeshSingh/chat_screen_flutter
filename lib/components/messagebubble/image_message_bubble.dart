@@ -14,11 +14,15 @@ class ImageMessageBubble extends StatelessWidget {
   final Message message;
   final bool isFromSignedInUser;
   final MessageProvider messageProvider;
+  final bool showCurrentUserProfilePicture;
+  final bool showOtherUserProfilePicture;
 
   ImageMessageBubble({
     this.message,
     this.isFromSignedInUser,
     this.messageProvider,
+    @required this.showCurrentUserProfilePicture,
+    @required this.showOtherUserProfilePicture,
   });
 
   @override

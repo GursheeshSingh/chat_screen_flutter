@@ -19,20 +19,29 @@ import 'models/content_type.dart';
 import 'models/message.dart';
 import 'models/message_status.dart';
 
+///If [showCurrentUserProfilePicture] is true, [currentUserProfilePicture] cannot be null
 class ChatScreen extends StatefulWidget {
   final MessageProvider messageProvider;
   final String currentUserId;
   final String currentUserName;
   final String currentUserProfilePicture;
+  final bool showCurrentUserProfilePicture;
+  final bool showOtherUserProfilePicture;
 
   static const double NAME_SIZE = 10;
 
-  const ChatScreen({
+  ChatScreen({
     @required this.messageProvider,
     @required this.currentUserId,
-    @required this.currentUserName,
+    this.currentUserName,
     this.currentUserProfilePicture,
-  });
+    this.showCurrentUserProfilePicture = false,
+    this.showOtherUserProfilePicture = false,
+  }) {
+    if (showCurrentUserProfilePicture) {
+      assert(currentUserProfilePicture != null);
+    }
+  }
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
