@@ -2,6 +2,7 @@ library chatscreen;
 
 import 'dart:io';
 
+import 'package:chatscreen/components/messagebubble/bubble_wrapper.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -20,12 +21,16 @@ import 'models/message.dart';
 import 'models/message_status.dart';
 
 ///If [showCurrentUserProfilePicture] is true, [currentUserProfilePicture] cannot be null
+///If [showCurrentUserName] is true, [currentUserName] cannot be null
 class ChatScreen extends StatefulWidget {
   final MessageProvider messageProvider;
   final String currentUserId;
   final String currentUserName;
   final String currentUserProfilePicture;
+
+  final bool showCurrentUserName;
   final bool showCurrentUserProfilePicture;
+  final bool showOtherUserName;
   final bool showOtherUserProfilePicture;
 
   static const double NAME_SIZE = 10;
@@ -35,9 +40,14 @@ class ChatScreen extends StatefulWidget {
     @required this.currentUserId,
     this.currentUserName,
     this.currentUserProfilePicture,
+    this.showCurrentUserName = false,
     this.showCurrentUserProfilePicture = false,
+    this.showOtherUserName = false,
     this.showOtherUserProfilePicture = false,
   }) {
+    if (showCurrentUserName) {
+      assert(currentUserName != null);
+    }
     if (showCurrentUserProfilePicture) {
       assert(currentUserProfilePicture != null);
     }
@@ -94,27 +104,39 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ? MainAxisAlignment.end
                                 : MainAxisAlignment.start,
                             children: <Widget>[
-                              message.contentType == ContentType.text.toString()
-                                  ? TextMessageBubble(
-                                      message: message,
-                                      isFromSignedInUser: isFromSignedInUser,
-                                    )
-                                  : message.contentType ==
-                                          ContentType.image.toString()
-                                      ? ImageMessageBubble(
-                                          message: message,
-                                          isFromSignedInUser:
-                                              isFromSignedInUser,
-                                          messageProvider:
-                                              widget.messageProvider,
-                                        )
-                                      : VideoMessageBubble(
-                                          message: message,
-                                          isFromSignedInUser:
-                                              isFromSignedInUser,
-                                          messageProvider:
-                                              widget.messageProvider,
-                                        ),
+                              BubbleWrapper(
+                                isFromSignedInUser: isFromSignedInUser,
+                                message: message,
+                                currentUserName: widget.currentUserName,
+                                showCurrentUserName: widget.showCurrentUserName,
+                                showCurrentUserProfilePicture:
+                                    widget.showCurrentUserProfilePicture,
+                                showOtherUserName: widget.showOtherUserName,
+                                showOtherUserProfilePicture:
+                                    widget.showOtherUserProfilePicture,
+                                child: message.contentType ==
+                                        ContentType.text.toString()
+                                    ? TextMessageBubble(
+                                        message: message,
+                                        isFromSignedInUser: isFromSignedInUser,
+                                      )
+                                    : message.contentType ==
+                                            ContentType.image.toString()
+                                        ? ImageMessageBubble(
+                                            message: message,
+                                            isFromSignedInUser:
+                                                isFromSignedInUser,
+                                            messageProvider:
+                                                widget.messageProvider,
+                                          )
+                                        : VideoMessageBubble(
+                                            message: message,
+                                            isFromSignedInUser:
+                                                isFromSignedInUser,
+                                            messageProvider:
+                                                widget.messageProvider,
+                                          ),
+                              ),
                               Visibility(
                                 visible: message.messageStatus != null &&
                                     message.messageStatus ==
@@ -300,6 +322,9 @@ class _ChatScreenState extends State<ChatScreen> {
         Object contentFile =
             await widget.messageProvider.getFileObject(uploadFile);
         message.contentFile = contentFile;
+
+        uploadFile = null;
+
         await widget.messageProvider.sendMessage(message);
 
         setState(() {

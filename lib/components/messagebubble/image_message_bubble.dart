@@ -14,62 +14,42 @@ class ImageMessageBubble extends StatelessWidget {
   final Message message;
   final bool isFromSignedInUser;
   final MessageProvider messageProvider;
-  final bool showCurrentUserProfilePicture;
-  final bool showOtherUserProfilePicture;
 
   ImageMessageBubble({
     this.message,
     this.isFromSignedInUser,
     this.messageProvider,
-    @required this.showCurrentUserProfilePicture,
-    @required this.showOtherUserProfilePicture,
   });
 
   @override
   Widget build(BuildContext context) {
     final fileUrl = messageProvider.getFileUrl(message.contentFile);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Visibility(
-          visible: isFromSignedInUser == false && message.fromName != null,
-          child: Container(
-            margin: EdgeInsets.only(left: 16),
-            child: Text(
-              message.fromName,
-              style: TextStyle(color: kDarkGray, fontSize: kMessageNameSize),
-            ),
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: GestureDetector(
+          onTap: () => _onPhotoClicked(context, fileUrl),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 150),
+            child: message.messageStatus != null &&
+                    message.messageStatus != MessageStatus.SUCCESS &&
+                    fileUrl == null
+                ? Container(
+                    color: kDarkGray,
+                    height: 150,
+                    width: 200,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: fileUrl,
+                    placeholder: (context, url) => _buildPlaceholder(),
+                    errorWidget: (context, url, error) => _buildErrorWidget(),
+                    fadeInDuration: Duration.zero,
+                    fadeOutDuration: Duration.zero,
+                  ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: GestureDetector(
-              onTap: () => _onPhotoClicked(context, fileUrl),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 150),
-                child: message.messageStatus != null &&
-                        message.messageStatus != MessageStatus.SUCCESS &&
-                        fileUrl == null
-                    ? Container(
-                        color: kDarkGray,
-                        height: 150,
-                        width: 200,
-                      )
-                    : CachedNetworkImage(
-                        imageUrl: fileUrl,
-                        placeholder: (context, url) => _buildPlaceholder(),
-                        errorWidget: (context, url, error) =>
-                            _buildErrorWidget(),
-                        fadeInDuration: Duration.zero,
-                        fadeOutDuration: Duration.zero,
-                      ),
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
