@@ -33,6 +33,9 @@ class ChatScreen extends StatefulWidget {
   final bool showOtherUserName;
   final bool showOtherUserProfilePicture;
 
+  final bool showShareButton;
+  final Function onShareClicked;
+
   static const double NAME_SIZE = 10;
 
   ChatScreen({
@@ -44,12 +47,17 @@ class ChatScreen extends StatefulWidget {
     this.showCurrentUserProfilePicture = false,
     this.showOtherUserName = false,
     this.showOtherUserProfilePicture = false,
+    this.showShareButton = false,
+    this.onShareClicked,
   }) {
     if (showCurrentUserName) {
       assert(currentUserName != null);
     }
     if (showCurrentUserProfilePicture) {
       assert(currentUserProfilePicture != null);
+    }
+    if (showShareButton) {
+      assert(onShareClicked != null);
     }
   }
 
@@ -76,7 +84,11 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar().build(context),
+      appBar: MyAppBar().build(
+        context,
+        showShareButton: widget.showShareButton,
+        onShareClicked: widget.onShareClicked,
+      ),
       backgroundColor: kLightGray,
       body: SafeArea(
         child: Column(
