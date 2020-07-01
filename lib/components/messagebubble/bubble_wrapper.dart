@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatscreen/models/message.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../constants.dart';
 
@@ -72,7 +73,30 @@ class BubbleWrapper extends StatelessWidget {
                 ),
               ),
             ),
-            child,
+            Transform(
+              transform:
+                  Matrix4.translationValues(isFromSignedInUser ? 60 : 0, 0, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  child,
+                  SizedBox(width: 8),
+                  Visibility(
+                    visible: isFromSignedInUser,
+                    child: Text(
+                      message.createdAt != null
+                          ? DateFormat("hh:mm aaa").format(message.createdAt)
+                          : "--:-- --",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(width: 4),
+                ],
+              ),
+            ),
           ],
         ),
         isFromSignedInUser && showCurrentUserProfilePicture

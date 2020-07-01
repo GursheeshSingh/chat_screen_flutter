@@ -3,6 +3,7 @@ library chatscreen;
 import 'dart:io';
 
 import 'package:chatscreen/components/messagebubble/bubble_wrapper.dart';
+import 'package:chatscreen/components/messagebubble/text_bubbles/simple_text_message_bubble.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -12,7 +13,6 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 import 'components/add_attachment_sheet.dart';
 import 'components/chat_empty_state.dart';
 import 'components/messagebubble/image_message_bubble.dart';
-import 'components/messagebubble/text_message_bubble.dart';
 import 'components/messagebubble/video_message_bubble.dart';
 import 'components/my_app_bar.dart';
 import 'constants.dart';
@@ -81,6 +81,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   int maxNumberOfLines = 1;
 
+  double _x = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,87 +105,108 @@ class _ChatScreenState extends State<ChatScreen> {
                       enablePullDown: false,
                       controller: _controller,
                       onLoading: _onLoading,
-                      child: ListView(
-                        reverse: true,
-                        children: List.generate(messages.length, (index) {
-                          bool isFromSignedInUser = false;
-                          Message message = messages[index];
-                          if (message.fromId == widget.currentUserId) {
-                            isFromSignedInUser = true;
+                      child: GestureDetector(
+                        onHorizontalDragUpdate: (e) {
+                          if (_x < -55) {
+                            return;
                           }
-                          return Row(
-                            mainAxisAlignment: isFromSignedInUser
-                                ? MainAxisAlignment.end
-                                : MainAxisAlignment.start,
-                            children: <Widget>[
-                              BubbleWrapper(
-                                isFromSignedInUser: isFromSignedInUser,
-                                message: message,
-                                currentUserName: widget.currentUserName,
-                                showCurrentUserName: widget.showCurrentUserName,
-                                showCurrentUserProfilePicture:
-                                    widget.showCurrentUserProfilePicture,
-                                showOtherUserName: widget.showOtherUserName,
-                                showOtherUserProfilePicture:
-                                    widget.showOtherUserProfilePicture,
-                                child: message.contentType ==
-                                        ContentType.text.toString()
-                                    ? TextMessageBubble(
-                                        message: message,
-                                        isFromSignedInUser: isFromSignedInUser,
-                                      )
-                                    : message.contentType ==
-                                            ContentType.image.toString()
-                                        ? ImageMessageBubble(
+                          setState(() {
+                            _x += e.delta.dx;
+                          });
+                        },
+                        onHorizontalDragEnd: (e) {
+                          setState(() {
+                            _x = 0;
+                          });
+                        },
+                        child: ListView(
+                          reverse: true,
+                          children: List.generate(messages.length, (index) {
+                            bool isFromSignedInUser = false;
+                            Message message = messages[index];
+                            if (message.fromId == widget.currentUserId) {
+                              isFromSignedInUser = true;
+                            }
+                            return Row(
+                              mainAxisAlignment: isFromSignedInUser
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                              children: <Widget>[
+                                Transform(
+                                  transform: Matrix4.translationValues(
+                                      isFromSignedInUser ? _x : 0, 0, 0),
+                                  child: BubbleWrapper(
+                                    isFromSignedInUser: isFromSignedInUser,
+                                    message: message,
+                                    currentUserName: widget.currentUserName,
+                                    showCurrentUserName:
+                                        widget.showCurrentUserName,
+                                    showCurrentUserProfilePicture:
+                                        widget.showCurrentUserProfilePicture,
+                                    showOtherUserName: widget.showOtherUserName,
+                                    showOtherUserProfilePicture:
+                                        widget.showOtherUserProfilePicture,
+                                    child: message.contentType ==
+                                            ContentType.text.toString()
+                                        ? SimpleTextMessageBubble(
                                             message: message,
                                             isFromSignedInUser:
                                                 isFromSignedInUser,
-                                            messageProvider:
-                                                widget.messageProvider,
                                           )
-                                        : VideoMessageBubble(
-                                            message: message,
-                                            isFromSignedInUser:
-                                                isFromSignedInUser,
-                                            messageProvider:
-                                                widget.messageProvider,
-                                          ),
-                              ),
-                              Visibility(
-                                visible: message.messageStatus != null &&
-                                    message.messageStatus ==
-                                        MessageStatus.UPLOADING,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height: 15,
-                                    width: 15,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation(
-                                          kCoolLightGreenBlue),
-                                      strokeWidth: 4.0,
+                                        : message.contentType ==
+                                                ContentType.image.toString()
+                                            ? ImageMessageBubble(
+                                                message: message,
+                                                isFromSignedInUser:
+                                                    isFromSignedInUser,
+                                                messageProvider:
+                                                    widget.messageProvider,
+                                              )
+                                            : VideoMessageBubble(
+                                                message: message,
+                                                isFromSignedInUser:
+                                                    isFromSignedInUser,
+                                                messageProvider:
+                                                    widget.messageProvider,
+                                              ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: message.messageStatus != null &&
+                                      message.messageStatus ==
+                                          MessageStatus.UPLOADING,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: 15,
+                                      width: 15,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            kCoolLightGreenBlue),
+                                        strokeWidth: 4.0,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: message.messageStatus != null &&
-                                    message.messageStatus ==
-                                        MessageStatus.FAILED,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: InkWell(
-                                    onTap: () {},
-                                    child: Icon(
-                                      MaterialIcons.error,
-                                      color: kErrorRed,
+                                Visibility(
+                                  visible: message.messageStatus != null &&
+                                      message.messageStatus ==
+                                          MessageStatus.FAILED,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Icon(
+                                        MaterialIcons.error,
+                                        color: kErrorRed,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          );
-                        }),
+                                )
+                              ],
+                            );
+                          }),
+                        ),
                       ),
                     ),
             ),

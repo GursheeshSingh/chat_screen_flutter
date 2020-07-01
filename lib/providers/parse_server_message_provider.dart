@@ -18,6 +18,7 @@ class ParseServerMessageProvider implements MessageProvider {
 
   @override
   Future<Message> sendMessage(Message message) async {
+    await Future.delayed(Duration(seconds: 3));
     try {
       ParseMessage parseMessage = message;
       var response = await parseMessage.save();
