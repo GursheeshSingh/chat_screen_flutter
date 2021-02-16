@@ -8,7 +8,7 @@ import '../constants.dart';
 class CustomDialog {
   static void show(context, String heading, String subHeading,
       String positiveButtonText, Function onPressedPositive,
-      [String negativeButtonText, Function onPressedNegative]) {
+      [String? negativeButtonText, Function? onPressedNegative]) {
     if (Platform.isIOS) {
       // iOS-specific code
       showCupertinoDialog(

@@ -25,8 +25,8 @@ import 'models/message_status.dart';
 class ChatScreen extends StatefulWidget {
   final MessageProvider messageProvider;
   final String currentUserId;
-  final String currentUserName;
-  final String currentUserProfilePicture;
+  final String? currentUserName;
+  final String? currentUserProfilePicture;
 
   final bool showCurrentUserName;
   final bool showCurrentUserProfilePicture;
@@ -34,13 +34,13 @@ class ChatScreen extends StatefulWidget {
   final bool showOtherUserProfilePicture;
 
   final bool showShareButton;
-  final Function onShareClicked;
+  final Function? onShareClicked;
 
   static const double NAME_SIZE = 10;
 
   ChatScreen({
-    @required this.messageProvider,
-    @required this.currentUserId,
+    required this.messageProvider,
+    required this.currentUserId,
     this.currentUserName,
     this.currentUserProfilePicture,
     this.showCurrentUserName = false,
@@ -66,9 +66,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  List<Message> messages;
+  List<Message?>? messages;
   TextEditingController _textEditingController = TextEditingController();
-  String messageText;
+  String? messageText;
   final RefreshController _controller =
       RefreshController(initialRefresh: false);
 
@@ -121,9 +121,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                         child: ListView(
                           reverse: true,
-                          children: List.generate(messages.length, (index) {
+                          children: List.generate(messages!.length, (index) {
                             bool isFromSignedInUser = false;
-                            Message message = messages[index];
+                            Message message = messages![index]!;
                             if (message.fromId == widget.currentUserId) {
                               isFromSignedInUser = true;
                             }
@@ -271,7 +271,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   loadInitialMessages() async {
-    List<Message> initialMessages =
+    List<Message?> initialMessages =
         await widget.messageProvider.fetchInitialMessages();
     this.messages = initialMessages;
     if (initialMessages.length < MessageProvider.LIMIT) {
@@ -283,21 +283,21 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   onNewMessage(List<Message> messages) {
-    this.messages.insertAll(0, messages);
+    this.messages!.insertAll(0, messages);
     setState(() {});
     loadVideoThumbnails(messages);
   }
 
-  loadVideoThumbnails(List<Message> messages) {
-    for (Message message in messages) {
-      if (message.contentType == ContentType.video.toString()) {
+  loadVideoThumbnails(List<Message?> messages) {
+    for (Message? message in messages) {
+      if (message!.contentType == ContentType.video.toString()) {
         _loadVideoThumbnailFor(message);
       }
     }
   }
 
   Future<void> _loadVideoThumbnailFor(Message message) async {
-    String videoUrl = widget.messageProvider.getFileUrl(message.contentFile);
+    String videoUrl = widget.messageProvider.getFileUrl(message.contentFile)!;
     final bytes = await VideoThumbnail.thumbnailData(
       video: videoUrl,
       imageFormat: ImageFormat.JPEG,
@@ -311,7 +311,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onLoading() async {
     try {
-      List<Message> messages = await loadOldMessages();
+      List<Message?> messages = await loadOldMessages();
       if (messages.length == 0 || messages.length < MessageProvider.LIMIT) {
         _controller.loadNoData();
       } else {
@@ -323,9 +323,9 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<List<Message>> loadOldMessages() async {
-    List<Message> oldMessages = await widget.messageProvider.fetchOldMessages();
-    this.messages.addAll(oldMessages);
+  Future<List<Message?>> loadOldMessages() async {
+    List<Message?> oldMessages = await widget.messageProvider.fetchOldMessages();
+    this.messages!.addAll(oldMessages);
     setState(() {});
     loadVideoThumbnails(oldMessages);
     return oldMessages;
@@ -345,7 +345,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         message.messageStatus = MessageStatus.UPLOADING;
-        messages.insert(0, message);
+        messages!.insert(0, message);
       });
 
       try {
@@ -354,7 +354,7 @@ class _ChatScreenState extends State<ChatScreen> {
         message.fromProfilePicture = widget.currentUserProfilePicture;
         message.contentType = uploadFileType.toString();
 
-        Object contentFile =
+        Object? contentFile =
             await widget.messageProvider.getFileObject(uploadFile);
         message.contentFile = contentFile;
 
@@ -378,8 +378,8 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  File uploadFile;
-  ContentType uploadFileType;
+  File? uploadFile;
+  ContentType? uploadFileType;
 
   _onFileSelected(File file, ContentType uploadFileType) {
     uploadFile = file;
@@ -406,7 +406,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         message.messageStatus = MessageStatus.UPLOADING;
-        messages.insert(0, message);
+        messages!.insert(0, message);
       });
 
       await widget.messageProvider.sendMessage(message);

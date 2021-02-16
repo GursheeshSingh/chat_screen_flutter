@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:chatscreen/models/firebase_message.dart';
@@ -13,11 +14,11 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
   final String roomId;
 
   final FirebaseApp app;
-  FirebaseDatabase database;
-  FirebaseStorage storage;
+  late FirebaseDatabase database;
+  late FirebaseStorage storage;
 
-  DateTime newestMessageCreatedAt;
-  DateTime oldestMessageCreatedAt;
+  DateTime? newestMessageCreatedAt;
+  DateTime? oldestMessageCreatedAt;
 
   FirebaseDatabaseMessageProvider(this.className, this.roomId, this.app) {
     storage = FirebaseStorage(app: app);
@@ -45,7 +46,7 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
 
       Map<String, dynamic> map = Map<String, dynamic>.from(snapshot.value);
 
-      List<Message> messages = List();
+      List<Message> messages = [];
       List<dynamic> list = map.values.toList();
 
       if (list == null || list.length == 0) {
@@ -59,9 +60,9 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
       }
 
       newestMessageCreatedAt =
-          new DateTime.fromMicrosecondsSinceEpoch(messages[0].createdAt);
+          new DateTime.fromMicrosecondsSinceEpoch(messages[0].createdAt as int);
       oldestMessageCreatedAt = new DateTime.fromMicrosecondsSinceEpoch(
-          messages[messages.length - 1].createdAt);
+          messages[messages.length - 1].createdAt as int);
 
       return messages;
     } catch (e) {
@@ -82,7 +83,7 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
 //          .getDocuments();
 //
 //      List<DocumentSnapshot> documents = snapshot.documents;
-//      List<Message> messages = List();
+//      List<Message> messages = [];
 //
 //      if (documents == null || documents.length == 0) {
 //        return messages;
@@ -107,30 +108,30 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
   }
 
   @override
-  Future<Object> getFileObject(File file) async {
+  Future<Object?> getFileObject(File? file) async {
     final StorageReference imagesRef =
         storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
     final StorageReference uploadFileRef = imagesRef.child(fileName);
 
-    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file);
+    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
     StorageTaskSnapshot snapshot = await storageUploadTask.onComplete;
 
-    String downloadUrl = await snapshot.ref.getDownloadURL();
+    String? downloadUrl = await (snapshot.ref.getDownloadURL() as FutureOr<String?>);
 
     return downloadUrl;
   }
 
   @override
-  String getFileUrl(Object contentFile) {
-    return contentFile;
+  String? getFileUrl(Object? contentFile) {
+    return contentFile as String?;
   }
 
   @override
   Future<Message> sendMessage(Message message) async {
     try {
-      FirebaseMessage firebaseMessage = message;
+      FirebaseMessage firebaseMessage = message as FirebaseMessage;
       firebaseMessage.createdAt = ServerValue.timestamp;
 
       await database
@@ -156,7 +157,7 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
     Query query = roomReference.orderByChild('createdAt');
 
     if (newestMessageCreatedAt != null) {
-      query = query.startAt(newestMessageCreatedAt.millisecondsSinceEpoch,
+      query = query.startAt(newestMessageCreatedAt!.millisecondsSinceEpoch,
           key: "createdAt");
     }
 

@@ -69,7 +69,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
 
   _buildOption(IconData optionIcon, String optionName, Function onItemClicked) {
     return GestureDetector(
-      onTap: onItemClicked,
+      onTap: onItemClicked as void Function()?,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16),
         child: Row(

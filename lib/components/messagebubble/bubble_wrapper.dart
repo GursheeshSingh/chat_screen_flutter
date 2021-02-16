@@ -8,17 +8,17 @@ import '../../constants.dart';
 class BubbleWrapper extends StatelessWidget {
   final Message message;
   final bool isFromSignedInUser;
-  final String currentUserName;
-  final bool showCurrentUserName;
-  final bool showCurrentUserProfilePicture;
-  final bool showOtherUserName;
-  final bool showOtherUserProfilePicture;
+  final String? currentUserName;
+  final bool? showCurrentUserName;
+  final bool? showCurrentUserProfilePicture;
+  final bool? showOtherUserName;
+  final bool? showOtherUserProfilePicture;
   final Widget child;
 
   BubbleWrapper({
-    @required this.child,
-    @required this.message,
-    @required this.isFromSignedInUser,
+    required this.child,
+    required this.message,
+    required this.isFromSignedInUser,
     this.currentUserName,
     this.showCurrentUserName,
     this.showCurrentUserProfilePicture,
@@ -29,7 +29,7 @@ class BubbleWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var avatar = CircleAvatar(
-      backgroundImage: CachedNetworkImageProvider(message.fromProfilePicture),
+      backgroundImage: CachedNetworkImageProvider(message.fromProfilePicture!),
       radius: 12.5,
       backgroundColor: Colors.transparent,
     );
@@ -38,7 +38,7 @@ class BubbleWrapper extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(width: 4),
-        isFromSignedInUser == false && showOtherUserProfilePicture
+        isFromSignedInUser == false && showOtherUserProfilePicture!
             ? avatar
             : SizedBox.shrink(),
         Column(
@@ -49,11 +49,11 @@ class BubbleWrapper extends StatelessWidget {
             Visibility(
               visible: isFromSignedInUser == false &&
                   message.fromName != null &&
-                  showOtherUserName,
+                  showOtherUserName!,
               child: Container(
                 margin: EdgeInsets.only(left: 8),
                 child: Text(
-                  message.fromName,
+                  message.fromName!,
                   style:
                       TextStyle(color: kDarkGray, fontSize: kMessageNameSize),
                 ),
@@ -62,12 +62,12 @@ class BubbleWrapper extends StatelessWidget {
             Visibility(
               visible: isFromSignedInUser &&
                   currentUserName != null &&
-                  showCurrentUserName,
+                  showCurrentUserName!,
               child: Container(
                 margin: EdgeInsets.only(right: 16),
                 alignment: Alignment.centerRight,
                 child: Text(
-                  currentUserName,
+                  currentUserName!,
                   style:
                       TextStyle(color: kDarkGray, fontSize: kMessageNameSize),
                 ),
@@ -85,11 +85,11 @@ class BubbleWrapper extends StatelessWidget {
                     visible: isFromSignedInUser,
                     child: Text(
                       message.createdAt != null
-                          ? DateFormat("hh:mm aaa").format(message.createdAt)
+                          ? DateFormat("hh:mm aaa").format(message.createdAt as DateTime)
                           : "--:-- --",
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle1
+                          .subtitle1!
                           .copyWith(fontSize: 14),
                     ),
                   ),
@@ -99,7 +99,7 @@ class BubbleWrapper extends StatelessWidget {
             ),
           ],
         ),
-        isFromSignedInUser && showCurrentUserProfilePicture
+        isFromSignedInUser && showCurrentUserProfilePicture!
             ? avatar
             : SizedBox.shrink(),
         SizedBox(width: 4),

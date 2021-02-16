@@ -5,7 +5,7 @@ import '../constants.dart';
 
 class MyAppBar {
   AppBar build(context,
-      {String heading, bool showShareButton, Function onShareClicked}) {
+      {String? heading, bool? showShareButton, Function? onShareClicked}) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -25,7 +25,7 @@ class MyAppBar {
               size: 25,
               color: kCoolLightGreenBlue,
             ),
-            onTap: onShareClicked,
+            onTap: onShareClicked as void Function()?,
           ),
         )
       ],

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:chatscreen/models/firebase_message.dart';
@@ -14,13 +15,13 @@ class CloudFirestoreMessageProvider implements MessageProvider {
   final String roomId;
 
   final FirebaseApp app;
-  Firestore firestore;
-  FirebaseStorage storage;
+  late Firestore firestore;
+  late FirebaseStorage storage;
 
-  DateTime newestMessageCreatedAt;
-  DateTime oldestMessageCreatedAt;
+  DateTime? newestMessageCreatedAt;
+  DateTime? oldestMessageCreatedAt;
 
-  DocumentSnapshot lastMessageSnapshot;
+  DocumentSnapshot? lastMessageSnapshot;
 
   CloudFirestoreMessageProvider(this.className, this.roomId, this.app) {
     firestore = Firestore(app: app);
@@ -42,7 +43,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
           .limit(MessageProvider.LIMIT)
           .getDocuments();
       List<DocumentSnapshot> documents = snapshot.documents;
-      List<Message> messages = List();
+      List<Message> messages = [];
 
       if (documents == null || documents.length == 0) {
         return messages;
@@ -79,7 +80,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
           .getDocuments();
 
       List<DocumentSnapshot> documents = snapshot.documents;
-      List<Message> messages = List();
+      List<Message> messages = [];
 
       if (documents == null || documents.length == 0) {
         return messages;
@@ -103,30 +104,30 @@ class CloudFirestoreMessageProvider implements MessageProvider {
   }
 
   @override
-  Future<Object> getFileObject(File file) async {
+  Future<Object?> getFileObject(File? file) async {
     final StorageReference imagesRef =
         storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
     final StorageReference uploadFileRef = imagesRef.child(fileName);
 
-    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file);
+    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
     StorageTaskSnapshot snapshot = await storageUploadTask.onComplete;
 
-    String downloadUrl = await snapshot.ref.getDownloadURL();
+    String? downloadUrl = await (snapshot.ref.getDownloadURL() as FutureOr<String?>);
 
     return downloadUrl;
   }
 
   @override
-  String getFileUrl(Object contentFile) {
-    return contentFile;
+  String? getFileUrl(Object? contentFile) {
+    return contentFile as String?;
   }
 
   @override
   Future<Message> sendMessage(Message message) async {
     try {
-      FirebaseMessage firestoreMessage = message;
+      FirebaseMessage firestoreMessage = message as FirebaseMessage;
       firestoreMessage.createdAt = FieldValue.serverTimestamp();
 
       await firestore
@@ -150,14 +151,14 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         .orderBy("createdAt", descending: true);
 
     if (lastMessageSnapshot != null) {
-      query = query.endBeforeDocument(lastMessageSnapshot);
+      query = query.endBeforeDocument(lastMessageSnapshot!);
     }
 
     Stream<QuerySnapshot> snapshots = query.snapshots();
     snapshots.forEach((snapshot) {
       List<DocumentChange> documentChanges = snapshot.documentChanges;
 
-      List<Message> recentMessages = List();
+      List<Message> recentMessages = [];
 
       for (int i = 0; i < documentChanges.length; i++) {
         if (documentChanges[i].type == DocumentChangeType.added) {

@@ -11,9 +11,9 @@ import '../../constants.dart';
 import '../gallery_photo_wrapper.dart';
 
 class ImageMessageBubble extends StatelessWidget {
-  final Message message;
-  final bool isFromSignedInUser;
-  final MessageProvider messageProvider;
+  final Message? message;
+  final bool? isFromSignedInUser;
+  final MessageProvider? messageProvider;
 
   ImageMessageBubble({
     this.message,
@@ -23,7 +23,7 @@ class ImageMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fileUrl = messageProvider.getFileUrl(message.contentFile);
+    final fileUrl = messageProvider!.getFileUrl(message!.contentFile);
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ClipRRect(
@@ -32,8 +32,8 @@ class ImageMessageBubble extends StatelessWidget {
           onTap: () => _onPhotoClicked(context, fileUrl),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxHeight: 150),
-            child: message.messageStatus != null &&
-                    message.messageStatus != MessageStatus.SUCCESS &&
+            child: message!.messageStatus != null &&
+                    message!.messageStatus != MessageStatus.SUCCESS &&
                     fileUrl == null
                 ? Container(
                     color: kDarkGray,
@@ -41,7 +41,7 @@ class ImageMessageBubble extends StatelessWidget {
                     width: 200,
                   )
                 : CachedNetworkImage(
-                    imageUrl: fileUrl,
+                    imageUrl: fileUrl!,
                     placeholder: (context, url) => _buildPlaceholder(),
                     errorWidget: (context, url, error) => _buildErrorWidget(),
                     fadeInDuration: Duration.zero,
@@ -99,7 +99,7 @@ class ImageMessageBubble extends StatelessWidget {
     );
   }
 
-  _onPhotoClicked(context, String imageUrl) {
+  _onPhotoClicked(context, String? imageUrl) {
     Navigator.push(
       context,
       MaterialPageRoute(
