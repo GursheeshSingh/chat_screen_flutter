@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:chatscreen/models/firebase_message.dart';
-import 'package:chatscreen/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
+import '../models/firebase_message.dart';
+import '../models/message.dart';
 import 'message_provider.dart';
 
 class CloudFirestoreMessageProvider implements MessageProvider {
@@ -15,7 +15,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
   final String roomId;
 
   final FirebaseApp app;
-  late Firestore firestore;
+  late FirebaseFirestore firestore;
   late FirebaseStorage storage;
 
   DateTime? newestMessageCreatedAt;
@@ -24,8 +24,8 @@ class CloudFirestoreMessageProvider implements MessageProvider {
   DocumentSnapshot? lastMessageSnapshot;
 
   CloudFirestoreMessageProvider(this.className, this.roomId, this.app) {
-    firestore = Firestore(app: app);
-    storage = FirebaseStorage(app: app);
+    firestore = FirebaseFirestore.instanceFor(app: app);
+    storage = FirebaseStorage.instanceFor(app: app);
   }
 
   @override
@@ -41,11 +41,11 @@ class CloudFirestoreMessageProvider implements MessageProvider {
           .where("roomId", isEqualTo: roomId)
           .orderBy("createdAt", descending: true)
           .limit(MessageProvider.LIMIT)
-          .getDocuments();
-      List<DocumentSnapshot> documents = snapshot.documents;
+          .get();
+      List<DocumentSnapshot> documents = snapshot.docs;
       List<Message> messages = [];
 
-      if (documents == null || documents.length == 0) {
+      if (documents.length == 0) {
         return messages;
       }
 
@@ -53,7 +53,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         DocumentSnapshot snapshot = documents[i];
 
         FirebaseMessage firestoreMessage = FirebaseMessage(className);
-        firestoreMessage.data = snapshot.data;
+        firestoreMessage.data = snapshot.data();
         messages.add(firestoreMessage);
       }
 
@@ -77,12 +77,12 @@ class CloudFirestoreMessageProvider implements MessageProvider {
           .orderBy("createdAt", descending: true)
           .where("createdAt", isLessThan: oldestMessageCreatedAt)
           .limit(MessageProvider.LIMIT)
-          .getDocuments();
+          .get();
 
-      List<DocumentSnapshot> documents = snapshot.documents;
+      List<DocumentSnapshot> documents = snapshot.docs;
       List<Message> messages = [];
 
-      if (documents == null || documents.length == 0) {
+      if (documents.length == 0) {
         return messages;
       }
 
@@ -90,7 +90,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         DocumentSnapshot snapshot = documents[i];
 
         FirebaseMessage firestoreMessage = FirebaseMessage(className);
-        firestoreMessage.data = snapshot.data;
+        firestoreMessage.data = snapshot.data();
         messages.add(firestoreMessage);
       }
 
@@ -105,16 +105,15 @@ class CloudFirestoreMessageProvider implements MessageProvider {
 
   @override
   Future<Object?> getFileObject(File? file) async {
-    final StorageReference imagesRef =
-        storage.ref().child('$className/$roomId');
+    final Reference imagesRef = storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
-    final StorageReference uploadFileRef = imagesRef.child(fileName);
+    final Reference uploadFileRef = imagesRef.child(fileName);
 
-    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
-    StorageTaskSnapshot snapshot = await storageUploadTask.onComplete;
+    UploadTask storageUploadTask = uploadFileRef.putFile(file!);
+    TaskSnapshot snapshot = await storageUploadTask.whenComplete(() => null);
 
-    String? downloadUrl = await (snapshot.ref.getDownloadURL() as FutureOr<String?>);
+    String? downloadUrl = await (snapshot.ref.getDownloadURL());
 
     return downloadUrl;
   }
@@ -130,10 +129,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
       FirebaseMessage firestoreMessage = message as FirebaseMessage;
       firestoreMessage.createdAt = FieldValue.serverTimestamp();
 
-      await firestore
-          .collection(className)
-          .document()
-          .setData(firestoreMessage.data);
+      await firestore.collection(className).doc().set(firestoreMessage.data);
 
       return firestoreMessage;
     } catch (e) {
@@ -156,7 +152,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
 
     Stream<QuerySnapshot> snapshots = query.snapshots();
     snapshots.forEach((snapshot) {
-      List<DocumentChange> documentChanges = snapshot.documentChanges;
+      List<DocumentChange> documentChanges = snapshot.docChanges;
 
       List<Message> recentMessages = [];
 
@@ -164,13 +160,13 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         if (documentChanges[i].type == DocumentChangeType.added) {
           FirebaseMessage firestoreMessage = FirebaseMessage(className);
 
-          firestoreMessage.data = documentChanges[i].document.data;
+          firestoreMessage.data = documentChanges[i].doc.data();
 
           if (firestoreMessage.fromId != currentUserId) {
             recentMessages.add(firestoreMessage);
           }
 
-          lastMessageSnapshot = documentChanges[i].document;
+          lastMessageSnapshot = documentChanges[i].doc;
         }
       }
       onNewMessage(recentMessages);

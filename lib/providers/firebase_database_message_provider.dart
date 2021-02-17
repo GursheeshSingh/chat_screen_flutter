@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:chatscreen/models/firebase_message.dart';
-import 'package:chatscreen/models/message.dart';
-import 'package:chatscreen/providers/message_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
+
+import '../models/firebase_message.dart';
+import '../models/message.dart';
+import 'message_provider.dart';
 
 class FirebaseDatabaseMessageProvider implements MessageProvider {
   final String className;
@@ -21,7 +22,7 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
   DateTime? oldestMessageCreatedAt;
 
   FirebaseDatabaseMessageProvider(this.className, this.roomId, this.app) {
-    storage = FirebaseStorage(app: app);
+    storage = FirebaseStorage.instanceFor(app: app);
     database = FirebaseDatabase(app: app);
   }
 
@@ -109,16 +110,15 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
 
   @override
   Future<Object?> getFileObject(File? file) async {
-    final StorageReference imagesRef =
-        storage.ref().child('$className/$roomId');
+    final Reference imagesRef = storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
-    final StorageReference uploadFileRef = imagesRef.child(fileName);
+    final Reference uploadFileRef = imagesRef.child(fileName);
 
-    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
-    StorageTaskSnapshot snapshot = await storageUploadTask.onComplete;
+    UploadTask storageUploadTask = uploadFileRef.putFile(file!);
+    TaskSnapshot snapshot = await storageUploadTask.whenComplete(() => null);
 
-    String? downloadUrl = await (snapshot.ref.getDownloadURL() as FutureOr<String?>);
+    String? downloadUrl = await (snapshot.ref.getDownloadURL());
 
     return downloadUrl;
   }
