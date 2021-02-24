@@ -50,7 +50,7 @@ class ParseServerMessageProvider implements MessageProvider {
           return messages;
         }
 
-        for (ParseMessage? message in response.results as Iterable<ParseMessage?>) {
+        for (ParseMessage? message in response.results) {
           messages.add(message);
           print('In Initial messages');
           print(response.results);
