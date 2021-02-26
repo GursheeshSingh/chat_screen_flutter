@@ -26,7 +26,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
     return Text(
       text,
       style:
-          TextStyle(fontFamily: kFontFamily, fontSize: 30, color: kCoolBlack),
+          TextStyle(fontFamily: kFontFamily, fontSize: 30, /*color: kCoolBlack*/),
     );
   }
 
@@ -35,7 +35,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       onTap: () {
         Navigator.pop(context);
       },
-      child: Icon(MaterialIcons.close, color: kDarkGray),
+      child: Icon(MaterialIcons.close, /*color: kDarkGray*/),
     );
   }
 
@@ -79,7 +79,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
             Text(
               optionName,
               style: TextStyle(
-                  fontFamily: kFontFamily, color: kCoolBlack, fontSize: 18),
+                  fontFamily: kFontFamily, /*color: kCoolBlack,*/ fontSize: 18),
             )
           ],
         ),

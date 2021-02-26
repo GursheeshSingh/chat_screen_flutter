@@ -27,7 +27,7 @@ class CustomDialog {
             subHeading,
             style: TextStyle(
               fontFamily: kFontFamily,
-              color: kDarkGray,
+              ///color: kDarkGray,
             ),
           ),
           actions: <Widget>[
@@ -69,7 +69,7 @@ class CustomDialog {
             subHeading,
             style: TextStyle(
               fontFamily: kFontFamily,
-              color: kDarkGray,
+              ///color: kDarkGray,
             ),
           ),
           actions: <Widget>[

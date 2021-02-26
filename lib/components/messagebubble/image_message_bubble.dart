@@ -36,7 +36,7 @@ class ImageMessageBubble extends StatelessWidget {
                     message!.messageStatus != MessageStatus.SUCCESS &&
                     fileUrl == null
                 ? Container(
-                    color: kDarkGray,
+                   /// color: kDarkGray,
                     height: 150,
                     width: 200,
                   )
@@ -57,7 +57,7 @@ class ImageMessageBubble extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          color: kDarkGray,
+          ///color: kDarkGray,
           height: 200,
           width: 200,
         ),
@@ -67,7 +67,7 @@ class ImageMessageBubble extends StatelessWidget {
               height: 25,
               width: 25,
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(kCoolLightGreenBlue),
+               /* valueColor: AlwaysStoppedAnimation(kCoolLightGreenBlue),*/
                 strokeWidth: 4.0,
               ),
             ),
@@ -81,7 +81,7 @@ class ImageMessageBubble extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          color: kDarkGray,
+          ///color: kDarkGray,
           height: 150,
           width: 200,
         ),
@@ -91,7 +91,7 @@ class ImageMessageBubble extends StatelessWidget {
             onTap: () {},
             child: Icon(
               MaterialIcons.error,
-              color: kErrorRed,
+              ///color: kErrorRed,
             ),
           )),
         )
