@@ -45,7 +45,7 @@ class ChatScreen extends StatefulWidget {
     this.currentUserProfilePicture,
     this.showCurrentUserName = false,
     this.showCurrentUserProfilePicture = false,
-    this.showOtherUserName = true,
+    this.showOtherUserName = false,
     this.showOtherUserProfilePicture = false,
     this.showShareButton = false,
     this.onShareClicked,
