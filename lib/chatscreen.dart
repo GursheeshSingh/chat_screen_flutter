@@ -45,7 +45,7 @@ class ChatScreen extends StatefulWidget {
     this.currentUserProfilePicture,
     this.showCurrentUserName = false,
     this.showCurrentUserProfilePicture = false,
-    this.showOtherUserName = false,
+    this.showOtherUserName = true,
     this.showOtherUserProfilePicture = false,
     this.showShareButton = false,
     this.onShareClicked,
@@ -91,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
         showShareButton: widget.showShareButton,
         onShareClicked: widget.onShareClicked,
       ),
-      backgroundColor: kLightGray,
+      //backgroundColor: kLightGray,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> {
               margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               padding: EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                //color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -255,7 +255,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Center(
                           child: Icon(
                             MaterialIcons.send,
-                            color: Colors.white,
+                           // color: Colors.white,
                           ),
                         ),
                       ),
