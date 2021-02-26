@@ -55,7 +55,7 @@ class BubbleWrapper extends StatelessWidget {
                 child: Text(
                   message.fromName!,
                   style:
-                      TextStyle(/*color: kDarkGray,*/ fontSize: kMessageNameSize),
+                      TextStyle(color: kDarkGray, fontSize: kMessageNameSize),
                 ),
               ),
             ),
@@ -69,7 +69,7 @@ class BubbleWrapper extends StatelessWidget {
                 child: Text(
                   currentUserName!,
                   style:
-                      TextStyle(/*color: kDarkGray,*/ fontSize: kMessageNameSize),
+                      TextStyle(color: kDarkGray, fontSize: kMessageNameSize),
                 ),
               ),
             ),

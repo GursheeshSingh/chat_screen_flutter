@@ -32,14 +32,14 @@ class SimpleTextMessageBubble extends StatelessWidget {
                   ? Radius.circular(30)
                   : Radius.circular(0),
             ),
-            color: isFromSignedInUser! ? Theme.of(context).primaryColor : Theme.of(context).primaryColorLight,
+            color: isFromSignedInUser! ? kCoolLightGreenBlue : Colors.white,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
                 message!.contentText!,
                 maxLines: null,
                 style: TextStyle(
-                  color: isFromSignedInUser! ? Theme.of(context).primaryColorLight : Theme.of(context).primaryColor,
+                  color: isFromSignedInUser! ? Colors.white : kCoolBlack,
                 ),
               ),
             ),

@@ -36,7 +36,7 @@ class VideoMessageBubble extends StatelessWidget {
                     : Container(
                         height: 150,
                         width: 250,
-                       /* color: kDarkGray,*/
+                        color: kDarkGray,
                       ),
               ),
               Positioned.fill(

@@ -91,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
         showShareButton: widget.showShareButton,
         onShareClicked: widget.onShareClicked,
       ),
-      //backgroundColor: kLightGray,
+      backgroundColor: kLightGray,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,8 +181,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       height: 15,
                                       width: 15,
                                       child: CircularProgressIndicator(
-                                      /*  valueColor: AlwaysStoppedAnimation(
-                                            kCoolLightGreenBlue),*/
+                                        valueColor: AlwaysStoppedAnimation(
+                                            kCoolLightGreenBlue),
                                         strokeWidth: 4.0,
                                       ),
                                     ),
@@ -198,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       onTap: () {},
                                       child: Icon(
                                         MaterialIcons.error,
-                                       // color: kErrorRed,
+                                        color: kErrorRed,
                                       ),
                                     ),
                                   ),
@@ -214,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> {
               margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               padding: EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                //color: Colors.white,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -229,7 +229,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       style: TextStyle(
                         fontFamily: kFontFamily,
-                       // color: kCoolBlack,
+                        color: kCoolBlack,
                         fontSize: 18,
                       ),
                       decoration: kMessageTextFieldDecoration,
@@ -250,12 +250,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Container(
                       margin: EdgeInsets.only(right: 16),
                       child: CircleAvatar(
-                       // backgroundColor: kCoolLightGreenBlue,
+                        backgroundColor: kCoolLightGreenBlue,
                         radius: 20,
                         child: Center(
                           child: Icon(
                             MaterialIcons.send,
-                           // color: Colors.white,
+                            color: Colors.white,
                           ),
                         ),
                       ),
