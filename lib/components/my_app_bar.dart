@@ -7,7 +7,7 @@ class MyAppBar {
   AppBar build(context,
       {String? heading, bool? showShareButton, Function? onShareClicked}) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      //backgroundColor: Colors.transparent,
       elevation: 0,
    //   iconTheme: IconThemeData(color: kCoolBlack),
       title: heading != null
