@@ -27,7 +27,7 @@ class CustomDialog {
             subHeading,
             style: TextStyle(
               fontFamily: kFontFamily,
-              color: kDarkGray,
+             // color: kDarkGray,
             ),
           ),
           actions: <Widget>[
@@ -37,7 +37,7 @@ class CustomDialog {
               },
               child: Text(
                 negativeButtonText ?? 'Cancel',
-                style: TextStyle(color: Colors.red),
+               // style: TextStyle(color: Colors.red),
               ),
             ),
             CupertinoDialogAction(
@@ -69,7 +69,7 @@ class CustomDialog {
             subHeading,
             style: TextStyle(
               fontFamily: kFontFamily,
-              color: kDarkGray,
+             // color: kDarkGray,
             ),
           ),
           actions: <Widget>[
@@ -83,7 +83,7 @@ class CustomDialog {
               },
               child: Text(
                 negativeButtonText ?? 'Cancel',
-                style: TextStyle(color: Colors.red),
+               // style: TextStyle(color: Colors.red),
               ),
             ),
             FlatButton(
