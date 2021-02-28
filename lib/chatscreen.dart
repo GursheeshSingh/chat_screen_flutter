@@ -45,7 +45,7 @@ class ChatScreen extends StatefulWidget {
     this.currentUserProfilePicture,
     this.showCurrentUserName = false,
     this.showCurrentUserProfilePicture = false,
-    this.showOtherUserName = false,
+    this.showOtherUserName = true,
     this.showOtherUserProfilePicture = false,
     this.showShareButton = false,
     this.onShareClicked,
@@ -198,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       onTap: () {},
                                       child: Icon(
                                         MaterialIcons.error,
-                                 //       color: kErrorRed,
+                                       color: Theme.of(context).errorColor,
                                       ),
                                     ),
                                   ),

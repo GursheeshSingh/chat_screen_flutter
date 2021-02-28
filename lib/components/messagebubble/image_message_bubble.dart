@@ -106,7 +106,7 @@ class ImageMessageBubble extends StatelessWidget {
         builder: (context) => GalleryPhotoViewWrapper(
           galleryItems: [GalleryItem(id: Uuid().v4(), resource: imageUrl)],
           backgroundDecoration: const BoxDecoration(
-            color: Colors.black,
+           // color: Colors.black,
           ),
           initialIndex: 0,
           scrollDirection: Axis.horizontal,
