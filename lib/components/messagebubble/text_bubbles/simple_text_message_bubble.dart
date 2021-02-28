@@ -39,7 +39,7 @@ class SimpleTextMessageBubble extends StatelessWidget {
                 message!.contentText!,
                 maxLines: null,
                 style: TextStyle(
-                  color: isFromSignedInUser! ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface,
+                  color: isFromSignedInUser! ? Theme.of(context).colorScheme.surface : Theme.of(context).primaryColor,
                 ),
               ),
             ),
