@@ -6,11 +6,11 @@ abstract class MessageProvider {
   static const int LIMIT = 20;
   static const int SKIP = 20;
 
-  Future<Message?> sendMessage(Message message);
+  Future<Message> sendMessage(Message message);
 
-  Future<List<Message?>> fetchInitialMessages();
+  Future<List<Message>> fetchInitialMessages();
 
-  Future<List<Message?>> fetchOldMessages();
+  Future<List<Message>> fetchOldMessages();
 
   Future<bool> setUpLiveClient(String currentUserId, Function onNewMessage);
 

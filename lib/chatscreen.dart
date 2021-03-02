@@ -83,6 +83,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   double _x = 0;
 
+  double get x => _x;
+
+  set x(double x) {
+    setState(() {
+      _x = x;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,17 +115,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       onLoading: _onLoading,
                       child: GestureDetector(
                         onHorizontalDragUpdate: (e) {
-                          if (_x < -55) {
+                          if (x < -55) {
                             return;
                           }
-                          setState(() {
-                            _x += e.delta.dx;
-                          });
+
+                          x += e.delta.dx;
                         },
                         onHorizontalDragEnd: (e) {
-                          setState(() {
-                            _x = 0;
-                          });
+                          x = 0;
                         },
                         child: ListView(
                           reverse: true,
@@ -134,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               children: <Widget>[
                                 Transform(
                                   transform: Matrix4.translationValues(
-                                      isFromSignedInUser ? _x : 0, 0, 0),
+                                      isFromSignedInUser ? x : 0, 0, 0),
                                   child: BubbleWrapper(
                                     isFromSignedInUser: isFromSignedInUser,
                                     message: message,
@@ -284,6 +289,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   onNewMessage(List<Message> messages) {
     this.messages!.insertAll(0, messages);
+
+    print('XXXXXXXXXXXXXXXXXX');
     setState(() {});
     loadVideoThumbnails(messages);
   }

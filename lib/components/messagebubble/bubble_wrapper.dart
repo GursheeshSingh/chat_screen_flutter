@@ -29,7 +29,8 @@ class BubbleWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var avatar = CircleAvatar(
-      backgroundImage: CachedNetworkImageProvider(message.fromProfilePicture!),
+      backgroundImage: CachedNetworkImageProvider(message.fromProfilePicture ??
+          "https://user-images.githubusercontent.com/31348106/48191192-59446e80-e33c-11e8-9658-c79a9fac72b0.png"),
       radius: 12.5,
       backgroundColor: Colors.transparent,
     );
@@ -54,8 +55,8 @@ class BubbleWrapper extends StatelessWidget {
                 margin: EdgeInsets.only(left: 8),
                 child: Text(
                   message.fromName!,
-                  style:
-                      TextStyle(/*color: kDarkGray,*/ fontSize: kMessageNameSize),
+                  style: TextStyle(
+                      /*color: kDarkGray,*/ fontSize: kMessageNameSize),
                 ),
               ),
             ),
@@ -68,8 +69,8 @@ class BubbleWrapper extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   currentUserName!,
-                  style:
-                      TextStyle(/*color: kDarkGray,*/ fontSize: kMessageNameSize),
+                  style: TextStyle(
+                      /*color: kDarkGray,*/ fontSize: kMessageNameSize),
                 ),
               ),
             ),
@@ -85,7 +86,8 @@ class BubbleWrapper extends StatelessWidget {
                     visible: isFromSignedInUser,
                     child: Text(
                       message.createdAt != null
-                          ? DateFormat("hh:mm aaa").format(message.createdAt as DateTime)
+                          ? DateFormat("hh:mm aaa")
+                              .format(message.createdAt as DateTime)
                           : "--:-- --",
                       style: Theme.of(context)
                           .textTheme
