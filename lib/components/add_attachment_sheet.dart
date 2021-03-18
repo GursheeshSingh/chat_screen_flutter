@@ -114,7 +114,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       }
     }
 
-    if (permissionStatus == PermissionStatus.undetermined) {
+    if (permissionStatus != PermissionStatus.granted) {
       permissionStatus = await permission.request();
 
       if (permissionStatus != PermissionStatus.granted) {

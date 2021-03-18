@@ -58,7 +58,6 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               builder: _buildPhoto,
               scrollPhysics: const BouncingScrollPhysics(),
               itemCount: widget.galleryItems.length,
-              backgroundDecoration: widget.backgroundDecoration!,
               pageController: widget.pageController,
               onPageChanged: onPageChanged,
               scrollDirection: widget.scrollDirection,

@@ -25,7 +25,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
 
   CloudFirestoreMessageProvider(this.className, this.roomId, this.app) {
     firestore = FirebaseFirestore.instanceFor(app: app);
-    storage = FirebaseStorage.instanceFor(app: app);
+    storage = FirebaseStorage.instance;
   }
 
   @override
@@ -53,7 +53,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         DocumentSnapshot snapshot = documents[i];
 
         FirebaseMessage firestoreMessage = FirebaseMessage(className);
-        firestoreMessage.data = snapshot.data();
+        firestoreMessage.data = snapshot.data()!;
         messages.add(firestoreMessage);
       }
 
@@ -90,7 +90,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         DocumentSnapshot snapshot = documents[i];
 
         FirebaseMessage firestoreMessage = FirebaseMessage(className);
-        firestoreMessage.data = snapshot.data();
+        firestoreMessage.data = snapshot.data() ?? {};
         messages.add(firestoreMessage);
       }
 
@@ -105,17 +105,15 @@ class CloudFirestoreMessageProvider implements MessageProvider {
 
   @override
   Future<Object?> getFileObject(File? file) async {
-    final Reference imagesRef = storage.ref().child('$className/$roomId');
+    final StorageReference imagesRef = storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
-    final Reference uploadFileRef = imagesRef.child(fileName);
+    final StorageReference uploadFileRef = imagesRef.child(fileName);
 
-    UploadTask storageUploadTask = uploadFileRef.putFile(file!);
-    TaskSnapshot snapshot = await storageUploadTask.whenComplete(() => null);
+    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
+    UploadTaskSnapshot snapshot = await storageUploadTask.future;
 
-    String? downloadUrl = await (snapshot.ref.getDownloadURL());
-
-    return downloadUrl;
+    return snapshot.downloadUrl;
   }
 
   @override
@@ -160,7 +158,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         if (documentChanges[i].type == DocumentChangeType.added) {
           FirebaseMessage firestoreMessage = FirebaseMessage(className);
 
-          firestoreMessage.data = documentChanges[i].doc.data();
+          firestoreMessage.data = documentChanges[i].doc.data() ?? {};
 
           if (firestoreMessage.fromId != currentUserId) {
             recentMessages.add(firestoreMessage);

@@ -22,7 +22,7 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
   DateTime? oldestMessageCreatedAt;
 
   FirebaseDatabaseMessageProvider(this.className, this.roomId, this.app) {
-    storage = FirebaseStorage.instanceFor(app: app);
+    storage = FirebaseStorage.instance;
     database = FirebaseDatabase(app: app);
   }
 
@@ -110,17 +110,15 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
 
   @override
   Future<Object?> getFileObject(File? file) async {
-    final Reference imagesRef = storage.ref().child('$className/$roomId');
+    final StorageReference imagesRef = storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
-    final Reference uploadFileRef = imagesRef.child(fileName);
+    final StorageReference uploadFileRef = imagesRef.child(fileName);
 
-    UploadTask storageUploadTask = uploadFileRef.putFile(file!);
-    TaskSnapshot snapshot = await storageUploadTask.whenComplete(() => null);
+    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
+    UploadTaskSnapshot snapshot = await storageUploadTask.future;
 
-    String? downloadUrl = await (snapshot.ref.getDownloadURL());
-
-    return downloadUrl;
+    return snapshot.downloadUrl;
   }
 
   @override
