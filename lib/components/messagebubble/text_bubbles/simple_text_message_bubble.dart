@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
 class SimpleTextMessageBubble extends StatelessWidget {
-  final Message message;
-  final bool isFromSignedInUser;
+  final Message? message;
+  final bool? isFromSignedInUser;
 
   SimpleTextMessageBubble({
     this.message,
@@ -27,19 +27,19 @@ class SimpleTextMessageBubble extends StatelessWidget {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30),
               topLeft:
-                  isFromSignedInUser ? Radius.circular(30) : Radius.circular(0),
+                  isFromSignedInUser! ? Radius.circular(30) : Radius.circular(0),
               topRight: isFromSignedInUser == false
                   ? Radius.circular(30)
                   : Radius.circular(0),
             ),
-            color: isFromSignedInUser ? kCoolLightGreenBlue : Colors.white,
+            color: isFromSignedInUser! ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
-                message.contentText,
+                message!.contentText!,
                 maxLines: null,
                 style: TextStyle(
-                  color: isFromSignedInUser ? Colors.white : kCoolBlack,
+                  color: isFromSignedInUser! ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),

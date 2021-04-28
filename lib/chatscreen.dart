@@ -25,8 +25,8 @@ import 'models/message_status.dart';
 class ChatScreen extends StatefulWidget {
   final MessageProvider messageProvider;
   final String currentUserId;
-  final String currentUserName;
-  final String currentUserProfilePicture;
+  final String? currentUserName;
+  final String? currentUserProfilePicture;
 
   final bool showCurrentUserName;
   final bool showCurrentUserProfilePicture;
@@ -34,18 +34,18 @@ class ChatScreen extends StatefulWidget {
   final bool showOtherUserProfilePicture;
 
   final bool showShareButton;
-  final Function onShareClicked;
+  final Function? onShareClicked;
 
   static const double NAME_SIZE = 10;
 
   ChatScreen({
-    @required this.messageProvider,
-    @required this.currentUserId,
+    required this.messageProvider,
+    required this.currentUserId,
     this.currentUserName,
     this.currentUserProfilePicture,
     this.showCurrentUserName = false,
     this.showCurrentUserProfilePicture = false,
-    this.showOtherUserName = false,
+    this.showOtherUserName = true,
     this.showOtherUserProfilePicture = false,
     this.showShareButton = false,
     this.onShareClicked,
@@ -66,9 +66,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  List<Message> messages;
+  List<Message?>? messages;
   TextEditingController _textEditingController = TextEditingController();
-  String messageText;
+  String? messageText;
   final RefreshController _controller =
       RefreshController(initialRefresh: false);
 
@@ -83,6 +83,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   double _x = 0;
 
+  double get x => _x;
+
+  set x(double x) {
+    setState(() {
+      _x = x;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
         showShareButton: widget.showShareButton,
         onShareClicked: widget.onShareClicked,
       ),
-      backgroundColor: kLightGray,
+     // backgroundColor: kLightGray,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,23 +115,20 @@ class _ChatScreenState extends State<ChatScreen> {
                       onLoading: _onLoading,
                       child: GestureDetector(
                         onHorizontalDragUpdate: (e) {
-                          if (_x < -55) {
+                          if (x < -55) {
                             return;
                           }
-                          setState(() {
-                            _x += e.delta.dx;
-                          });
+
+                          x += e.delta.dx;
                         },
                         onHorizontalDragEnd: (e) {
-                          setState(() {
-                            _x = 0;
-                          });
+                          x = 0;
                         },
                         child: ListView(
                           reverse: true,
-                          children: List.generate(messages.length, (index) {
+                          children: List.generate(messages!.length, (index) {
                             bool isFromSignedInUser = false;
-                            Message message = messages[index];
+                            Message message = messages![index]!;
                             if (message.fromId == widget.currentUserId) {
                               isFromSignedInUser = true;
                             }
@@ -134,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               children: <Widget>[
                                 Transform(
                                   transform: Matrix4.translationValues(
-                                      isFromSignedInUser ? _x : 0, 0, 0),
+                                      isFromSignedInUser ? x : 0, 0, 0),
                                   child: BubbleWrapper(
                                     isFromSignedInUser: isFromSignedInUser,
                                     message: message,
@@ -181,8 +186,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       height: 15,
                                       width: 15,
                                       child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation(
-                                            kCoolLightGreenBlue),
+                                      /*  valueColor: AlwaysStoppedAnimation(
+                                            kCoolLightGreenBlue),*/
                                         strokeWidth: 4.0,
                                       ),
                                     ),
@@ -198,7 +203,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       onTap: () {},
                                       child: Icon(
                                         MaterialIcons.error,
-                                        color: kErrorRed,
+                                       color: Theme.of(context).errorColor,
                                       ),
                                     ),
                                   ),
@@ -214,7 +219,7 @@ class _ChatScreenState extends State<ChatScreen> {
               margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               padding: EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+             //   color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -229,7 +234,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       style: TextStyle(
                         fontFamily: kFontFamily,
-                        color: kCoolBlack,
+                      //  color: kCoolBlack,
                         fontSize: 18,
                       ),
                       decoration: kMessageTextFieldDecoration,
@@ -250,12 +255,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Container(
                       margin: EdgeInsets.only(right: 16),
                       child: CircleAvatar(
-                        backgroundColor: kCoolLightGreenBlue,
+                       // backgroundColor: kCoolLightGreenBlue,
                         radius: 20,
                         child: Center(
                           child: Icon(
                             MaterialIcons.send,
-                            color: Colors.white,
+                          //  color: Colors.white,
                           ),
                         ),
                       ),
@@ -271,7 +276,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   loadInitialMessages() async {
-    List<Message> initialMessages =
+    List<Message?> initialMessages =
         await widget.messageProvider.fetchInitialMessages();
     this.messages = initialMessages;
     if (initialMessages.length < MessageProvider.LIMIT) {
@@ -283,21 +288,23 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   onNewMessage(List<Message> messages) {
-    this.messages.insertAll(0, messages);
+    this.messages!.insertAll(0, messages);
+
+    print('XXXXXXXXXXXXXXXXXX');
     setState(() {});
     loadVideoThumbnails(messages);
   }
 
-  loadVideoThumbnails(List<Message> messages) {
-    for (Message message in messages) {
-      if (message.contentType == ContentType.video.toString()) {
+  loadVideoThumbnails(List<Message?> messages) {
+    for (Message? message in messages) {
+      if (message!.contentType == ContentType.video.toString()) {
         _loadVideoThumbnailFor(message);
       }
     }
   }
 
   Future<void> _loadVideoThumbnailFor(Message message) async {
-    String videoUrl = widget.messageProvider.getFileUrl(message.contentFile);
+    String videoUrl = widget.messageProvider.getFileUrl(message.contentFile)!;
     final bytes = await VideoThumbnail.thumbnailData(
       video: videoUrl,
       imageFormat: ImageFormat.JPEG,
@@ -311,7 +318,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onLoading() async {
     try {
-      List<Message> messages = await loadOldMessages();
+      List<Message?> messages = await loadOldMessages();
       if (messages.length == 0 || messages.length < MessageProvider.LIMIT) {
         _controller.loadNoData();
       } else {
@@ -323,9 +330,9 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<List<Message>> loadOldMessages() async {
-    List<Message> oldMessages = await widget.messageProvider.fetchOldMessages();
-    this.messages.addAll(oldMessages);
+  Future<List<Message?>> loadOldMessages() async {
+    List<Message?> oldMessages = await widget.messageProvider.fetchOldMessages();
+    this.messages!.addAll(oldMessages);
     setState(() {});
     loadVideoThumbnails(oldMessages);
     return oldMessages;
@@ -345,7 +352,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         message.messageStatus = MessageStatus.UPLOADING;
-        messages.insert(0, message);
+        messages!.insert(0, message);
       });
 
       try {
@@ -354,7 +361,7 @@ class _ChatScreenState extends State<ChatScreen> {
         message.fromProfilePicture = widget.currentUserProfilePicture;
         message.contentType = uploadFileType.toString();
 
-        Object contentFile =
+        Object? contentFile =
             await widget.messageProvider.getFileObject(uploadFile);
         message.contentFile = contentFile;
 
@@ -378,8 +385,8 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  File uploadFile;
-  ContentType uploadFileType;
+  File? uploadFile;
+  ContentType? uploadFileType;
 
   _onFileSelected(File file, ContentType uploadFileType) {
     uploadFile = file;
@@ -406,7 +413,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         message.messageStatus = MessageStatus.UPLOADING;
-        messages.insert(0, message);
+        messages!.insert(0, message);
       });
 
       await widget.messageProvider.sendMessage(message);

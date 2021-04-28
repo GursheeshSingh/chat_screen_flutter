@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 const kWhatsappGreen = Color.fromRGBO(255, 255, 199, 1.0);
 
 class WhatsAppTextMessageBubble extends StatelessWidget {
-  final Message message;
-  final bool isFromSignedInUser;
+  final Message? message;
+  final bool? isFromSignedInUser;
 
   WhatsAppTextMessageBubble({
     this.message,
@@ -23,12 +23,12 @@ class WhatsAppTextMessageBubble extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
           child: Bubble(
-            alignment: isFromSignedInUser
+            alignment: isFromSignedInUser!
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
-            child: Text(message.contentText),
-            color: isFromSignedInUser ? kWhatsappGreen : Colors.white,
-            nip: isFromSignedInUser ? BubbleNip.rightTop : BubbleNip.leftTop,
+            child: Text(message!.contentText!),
+            color: isFromSignedInUser! ? kWhatsappGreen : Colors.white,
+            nip: isFromSignedInUser! ? BubbleNip.rightTop : BubbleNip.leftTop,
           ),
         ),
       );

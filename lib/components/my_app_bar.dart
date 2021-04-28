@@ -5,15 +5,15 @@ import '../constants.dart';
 
 class MyAppBar {
   AppBar build(context,
-      {String heading, bool showShareButton, Function onShareClicked}) {
+      {String? heading, bool? showShareButton, Function? onShareClicked}) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      //backgroundColor: Colors.transparent,
       elevation: 0,
-      iconTheme: IconThemeData(color: kCoolBlack),
+   //   iconTheme: IconThemeData(color: kCoolBlack),
       title: heading != null
           ? Text(
               heading,
-              style: TextStyle(color: kCoolBlack),
+           //   style: TextStyle(color: kCoolBlack),
             )
           : SizedBox.shrink(),
       actions: <Widget>[
@@ -23,9 +23,9 @@ class MyAppBar {
             child: Icon(
               Feather.share,
               size: 25,
-              color: kCoolLightGreenBlue,
+           //   color: kCoolLightGreenBlue,
             ),
-            onTap: onShareClicked,
+            onTap: onShareClicked as void Function()?,
           ),
         )
       ],

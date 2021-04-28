@@ -5,38 +5,38 @@ import 'message_status.dart';
 abstract class Message {
   Message();
 
-  Uint8List videoThumbnail;
-  MessageStatus messageStatus;
+  Uint8List? videoThumbnail;
+  MessageStatus? messageStatus;
 
-  String get fromId;
+  String? get fromId;
 
-  String get contentType;
+  String? get contentType;
 
-  String get contentText;
+  String? get contentText;
 
-  String get roomId;
+  String? get roomId;
 
-  String get fromName;
+  String? get fromName;
 
-  String get fromProfilePicture;
+  String? get fromProfilePicture;
 
-  Object get contentFile;
+  Object? get contentFile;
 
-  Object get createdAt;
+  Object? get createdAt;
 
-  set fromId(String fromId);
+  set fromId(String? fromId);
 
-  set fromName(String fromName);
+  set fromName(String? fromName);
 
-  set fromProfilePicture(String fromProfilePicture);
+  set fromProfilePicture(String? fromProfilePicture);
 
-  set contentType(String contentType);
+  set contentType(String? contentType);
 
-  set contentText(String contentText);
+  set contentText(String? contentText);
 
-  set contentFile(Object contentFile);
+  set contentFile(Object? contentFile);
 
-  set roomId(String roomId);
+  set roomId(String? roomId);
 
-  set createdAt(Object createdAt);
+  set createdAt(Object? createdAt);
 }

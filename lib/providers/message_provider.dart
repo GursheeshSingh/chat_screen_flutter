@@ -14,9 +14,9 @@ abstract class MessageProvider {
 
   Future<bool> setUpLiveClient(String currentUserId, Function onNewMessage);
 
-  String getFileUrl(Object contentFile);
+  String? getFileUrl(Object? contentFile);
 
-  Future<Object> getFileObject(File file);
+  Future<Object?> getFileObject(File? file);
 
   Message createMessage();
 }
