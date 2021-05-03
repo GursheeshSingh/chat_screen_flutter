@@ -1,6 +1,6 @@
 name: chatscreen
 description: An easy way to add chat to your project
-version: 0.0.3+11
+version: 0.0.3+12
 homepage: https://github.com/GursheeshSingh/chat_screen_flutter
 
 environment:
@@ -21,7 +21,7 @@ dependencies:
 
   cached_network_image:
   photo_view:
-  video_player: ^2.0.0
+  video_player:
   uuid:
   parse_server_sdk:
 

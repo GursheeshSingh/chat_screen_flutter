@@ -160,12 +160,10 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       return;
     }
 
-    File image = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-    );
+    PickedFile? image = await ImagePicker().getImage(source: ImageSource.gallery,);
 
     if (image != null) {
-      widget.onFileSelected(image, ContentType.image);
+      widget.onFileSelected(File(image.path), ContentType.image);
     }
     Navigator.pop(context);
   }
@@ -187,12 +185,12 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       return;
     }
 
-    File video = await ImagePicker.pickVideo(
+    PickedFile? video = await ImagePicker().getVideo(
       source: ImageSource.gallery,
     );
 
     if (video != null) {
-      widget.onFileSelected(video, ContentType.video);
+      widget.onFileSelected(File(video.path), ContentType.video);
     }
     Navigator.pop(context);
   }
@@ -210,7 +208,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       return;
     }
 
-    File video = await ImagePicker.pickImage(
+    PickedFile? video = await ImagePicker().getImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.rear,
     );

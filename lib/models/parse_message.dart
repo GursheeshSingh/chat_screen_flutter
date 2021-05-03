@@ -20,19 +20,19 @@ class ParseMessage extends ParseObject implements ParseCloneable, Message {
   MessageStatus? messageStatus;
   Uint8List? videoThumbnail;
 
-  String get fromId => get<String>("from");
+  String get fromId => get<String>("from") ?? "";
 
-  String get contentType => get<String>("contentType");
+  String get contentType => get<String>("contentType") ?? "";
 
-  String get contentText => get<String>("contentText");
+  String get contentText => get<String>("contentText") ?? "";
 
-  Object get contentFile => get<Object>("contentFile");
+  Object get contentFile => get<Object>("contentFile") ?? "";
 
-  String get roomId => get<String>("roomId");
+  String get roomId => get<String>("roomId") ?? "";
 
-  String get fromName => get<String>("fromName");
+  String get fromName => get<String>("fromName") ?? "";
 
-  String get fromProfilePicture => get<String>("fromProfilePicture");
+  String get fromProfilePicture => get<String>("fromProfilePicture") ?? "";
 
   set fromId(String? fromId) => set<String?>("from", fromId);
 

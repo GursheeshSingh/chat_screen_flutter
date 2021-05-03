@@ -45,24 +45,24 @@ class ParseServerMessageProvider implements MessageProvider {
 
       var response = await queryBuilder.query();
 
-      if (response.success) {
-        if (response.results == null || response.results.length == 0) {
-          return messages;
-        }
-
-        print('Initial messages:');
-        for (ParseMessage message in response.results) {
-          messages.add(message);
-          print(message);
-        }
-
-        newestMessageCreatedAt = messages.first.createdAt as DateTime?;
-        oldestMessageCreatedAt = messages.last.createdAt as DateTime?;
-
-        return messages;
-      } else {
-        throw response.error.message;
+      if (!response.success) {
+        throw response.error?.message ?? "Error in Response!!";
       }
+      if (response.results?.length == 0) {
+        return messages;
+      }
+
+      print('Initial messages:');
+      for (ParseMessage message in response.results!) {
+        messages.add(message);
+        print(message);
+      }
+
+      newestMessageCreatedAt = messages.first.createdAt as DateTime?;
+      oldestMessageCreatedAt = messages.last.createdAt as DateTime?;
+
+      return messages;
+
     } catch (e) {
       throw e;
     }
@@ -81,23 +81,24 @@ class ParseServerMessageProvider implements MessageProvider {
 
       var response = await queryBuilder.query();
 
-      if (response.success) {
-        if (response.results == null) {
-          return messages;
-        }
-
-        for (Message message in response.results) {
-          messages.add(message);
-        }
-
-        if (messages.length != 0) {
-          oldestMessageCreatedAt = messages.last.createdAt as DateTime?;
-        }
-
-        return messages;
-      } else {
-        throw response.error.message;
+      if (!response.success) {
+        throw response.error?.message ?? "Error in Response";
       }
+
+      if (response.results?.length == 0) {
+        return messages;
+      }
+
+      for (Message message in response.results!) {
+        messages.add(message);
+      }
+
+      if (messages.length != 0) {
+        oldestMessageCreatedAt = messages.last.createdAt as DateTime?;
+      }
+
+      return messages;
+
     } catch (e) {
       throw e;
     }

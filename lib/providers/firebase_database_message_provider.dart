@@ -110,15 +110,14 @@ class FirebaseDatabaseMessageProvider implements MessageProvider {
 
   @override
   Future<Object?> getFileObject(File? file) async {
-    final StorageReference imagesRef = storage.ref().child('$className/$roomId');
+    final Reference imagesRef = storage.ref().child('$className/$roomId');
     String fileName = Uuid().v4();
 
-    final StorageReference uploadFileRef = imagesRef.child(fileName);
+    final Reference uploadFileRef = imagesRef.child(fileName);
 
-    StorageUploadTask storageUploadTask = uploadFileRef.putFile(file!);
-    UploadTaskSnapshot snapshot = await storageUploadTask.future;
+    UploadTask storageUploadTask = uploadFileRef.putFile(file!);
 
-    return snapshot.downloadUrl;
+    return storageUploadTask.snapshot.ref.getDownloadURL();
   }
 
   @override
