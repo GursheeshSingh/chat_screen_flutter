@@ -4,7 +4,6 @@ import 'package:chatscreen/models/message.dart';
 import 'package:chatscreen/models/message_status.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
@@ -90,7 +89,7 @@ class ImageMessageBubble extends StatelessWidget {
               child: InkWell(
             onTap: () {},
             child: Icon(
-              MaterialIcons.error,
+              Icons.error,
              // color: kErrorRed,
             ),
           )),

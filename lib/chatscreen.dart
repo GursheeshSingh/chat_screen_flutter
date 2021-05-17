@@ -6,7 +6,6 @@ import 'package:chatscreen/components/messagebubble/bubble_wrapper.dart';
 import 'package:chatscreen/components/messagebubble/text_bubbles/simple_text_message_bubble.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -202,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     child: InkWell(
                                       onTap: () {},
                                       child: Icon(
-                                        MaterialIcons.error,
+                                        Icons.error,
                                        color: Theme.of(context).errorColor,
                                       ),
                                     ),
@@ -245,7 +244,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Container(
                       margin: EdgeInsets.only(right: 16),
                       child: Icon(
-                        MaterialIcons.add,
+                        Icons.add,
                         size: 40,
                       ),
                     ),
@@ -259,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         radius: 20,
                         child: Center(
                           child: Icon(
-                            MaterialIcons.send,
+                            Icons.send,
                           //  color: Colors.white,
                           ),
                         ),

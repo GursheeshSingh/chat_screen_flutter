@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 import '../constants.dart';
 
@@ -21,7 +20,7 @@ class MyAppBar {
           margin: EdgeInsets.only(right: 16),
           child: GestureDetector(
             child: Icon(
-              Feather.share,
+              Icons.share,
               size: 25,
            //   color: kCoolLightGreenBlue,
             ),

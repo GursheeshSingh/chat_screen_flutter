@@ -1,6 +1,6 @@
 name: chatscreen
 description: An easy way to add chat to your project
-version: 0.0.3+12
+version: 0.0.3+14
 homepage: https://github.com/GursheeshSingh/chat_screen_flutter
 
 environment:
@@ -12,7 +12,6 @@ dependencies:
 
   pull_to_refresh:
   shimmer:
-  flutter_icons:
   video_thumbnail:
   permission_handler:
   image_picker:

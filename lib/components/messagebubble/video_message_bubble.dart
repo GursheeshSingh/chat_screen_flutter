@@ -3,7 +3,6 @@ import 'package:chatscreen/models/message.dart';
 import 'package:chatscreen/models/message_status.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../constants.dart';
 
@@ -42,7 +41,7 @@ class VideoMessageBubble extends StatelessWidget {
               Positioned.fill(
                 child: Center(
                   child: Icon(
-                    AntDesign.play,
+                    Icons.play_arrow,
                     size: 50,
                     color: Colors.white,
                   ),

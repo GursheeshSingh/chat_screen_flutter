@@ -53,7 +53,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         DocumentSnapshot snapshot = documents[i];
 
         FirebaseMessage firestoreMessage = FirebaseMessage(className);
-        firestoreMessage.data = snapshot.data()!;
+        firestoreMessage.data = snapshot.data() as Map<String, dynamic>;
         messages.add(firestoreMessage);
       }
 
@@ -90,7 +90,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         DocumentSnapshot snapshot = documents[i];
 
         FirebaseMessage firestoreMessage = FirebaseMessage(className);
-        firestoreMessage.data = snapshot.data() ?? {};
+        firestoreMessage.data = snapshot.data() as Map<String, dynamic>;
         messages.add(firestoreMessage);
       }
 
@@ -157,7 +157,7 @@ class CloudFirestoreMessageProvider implements MessageProvider {
         if (documentChanges[i].type == DocumentChangeType.added) {
           FirebaseMessage firestoreMessage = FirebaseMessage(className);
 
-          firestoreMessage.data = documentChanges[i].doc.data() ?? {};
+          firestoreMessage.data = documentChanges[i].doc.data() as Map<String, dynamic>;
 
           if (firestoreMessage.fromId != currentUserId) {
             recentMessages.add(firestoreMessage);

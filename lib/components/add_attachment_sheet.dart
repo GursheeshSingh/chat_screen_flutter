@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:chatscreen/models/content_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -35,7 +34,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       onTap: () {
         Navigator.pop(context);
       },
-      child: Icon(MaterialIcons.close, /*color: kDarkGray*/),
+      child: Icon(Icons.close, /*color: kDarkGray*/),
     );
   }
 
@@ -55,11 +54,11 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
                 _buildCloseButton(context)
               ],
             ),
-            _buildOption(FontAwesome.camera, 'Camera',
+            _buildOption(Icons.camera, 'Camera',
                 () => _onPickFromCameraClicked(context)),
-            _buildOption(MaterialIcons.photo_library, 'Photo library',
+            _buildOption(Icons.photo_library, 'Photo library',
                 () => _onAddPhotoClicked(context)),
-            _buildOption(Entypo.folder_video, 'Video library',
+            _buildOption(Icons.video_collection, 'Video library',
                 () => _onAddVideoClicked(context)),
           ],
         ),
