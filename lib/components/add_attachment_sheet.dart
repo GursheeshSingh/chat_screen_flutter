@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:chatscreen/models/content_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -26,7 +25,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
     return Text(
       text,
       style:
-          TextStyle(fontFamily: kFontFamily, fontSize: 30, color: kCoolBlack),
+          TextStyle(fontFamily: kFontFamily, fontSize: 30, /*color: kCoolBlack*/),
     );
   }
 
@@ -35,7 +34,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       onTap: () {
         Navigator.pop(context);
       },
-      child: Icon(MaterialIcons.close, color: kDarkGray),
+      child: Icon(Icons.close, /*color: kDarkGray*/),
     );
   }
 
@@ -55,11 +54,11 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
                 _buildCloseButton(context)
               ],
             ),
-            _buildOption(FontAwesome.camera, 'Camera',
+            _buildOption(Icons.camera, 'Camera',
                 () => _onPickFromCameraClicked(context)),
-            _buildOption(MaterialIcons.photo_library, 'Photo library',
+            _buildOption(Icons.photo_library, 'Photo library',
                 () => _onAddPhotoClicked(context)),
-            _buildOption(Entypo.folder_video, 'Video library',
+            _buildOption(Icons.video_collection, 'Video library',
                 () => _onAddVideoClicked(context)),
           ],
         ),
@@ -69,7 +68,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
 
   _buildOption(IconData optionIcon, String optionName, Function onItemClicked) {
     return GestureDetector(
-      onTap: onItemClicked,
+      onTap: onItemClicked as void Function()?,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16),
         child: Row(
@@ -79,7 +78,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
             Text(
               optionName,
               style: TextStyle(
-                  fontFamily: kFontFamily, color: kCoolBlack, fontSize: 18),
+                  fontFamily: kFontFamily, /*color: kCoolBlack,*/ fontSize: 18),
             )
           ],
         ),
@@ -114,7 +113,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       }
     }
 
-    if (permissionStatus == PermissionStatus.undetermined) {
+    if (permissionStatus != PermissionStatus.granted) {
       permissionStatus = await permission.request();
 
       if (permissionStatus != PermissionStatus.granted) {
@@ -160,12 +159,10 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       return;
     }
 
-    File image = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-    );
+    PickedFile? image = await ImagePicker().getImage(source: ImageSource.gallery,);
 
     if (image != null) {
-      widget.onFileSelected(image, ContentType.image);
+      widget.onFileSelected(File(image.path), ContentType.image);
     }
     Navigator.pop(context);
   }
@@ -187,12 +184,12 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       return;
     }
 
-    File video = await ImagePicker.pickVideo(
+    PickedFile? video = await ImagePicker().getVideo(
       source: ImageSource.gallery,
     );
 
     if (video != null) {
-      widget.onFileSelected(video, ContentType.video);
+      widget.onFileSelected(File(video.path), ContentType.video);
     }
     Navigator.pop(context);
   }
@@ -210,7 +207,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
       return;
     }
 
-    File video = await ImagePicker.pickImage(
+    PickedFile? video = await ImagePicker().getImage(
       source: ImageSource.camera,
       preferredCameraDevice: CameraDevice.rear,
     );

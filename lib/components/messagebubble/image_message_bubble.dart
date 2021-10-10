@@ -4,16 +4,15 @@ import 'package:chatscreen/models/message.dart';
 import 'package:chatscreen/models/message_status.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../gallery_photo_wrapper.dart';
 
 class ImageMessageBubble extends StatelessWidget {
-  final Message message;
-  final bool isFromSignedInUser;
-  final MessageProvider messageProvider;
+  final Message? message;
+  final bool? isFromSignedInUser;
+  final MessageProvider? messageProvider;
 
   ImageMessageBubble({
     this.message,
@@ -23,7 +22,7 @@ class ImageMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fileUrl = messageProvider.getFileUrl(message.contentFile);
+    final fileUrl = messageProvider!.getFileUrl(message!.contentFile);
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ClipRRect(
@@ -32,16 +31,16 @@ class ImageMessageBubble extends StatelessWidget {
           onTap: () => _onPhotoClicked(context, fileUrl),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxHeight: 150),
-            child: message.messageStatus != null &&
-                    message.messageStatus != MessageStatus.SUCCESS &&
+            child: message!.messageStatus != null &&
+                    message!.messageStatus != MessageStatus.SUCCESS &&
                     fileUrl == null
                 ? Container(
-                    color: kDarkGray,
+                  //  color: kDarkGray,
                     height: 150,
                     width: 200,
                   )
                 : CachedNetworkImage(
-                    imageUrl: fileUrl,
+                    imageUrl: fileUrl!,
                     placeholder: (context, url) => _buildPlaceholder(),
                     errorWidget: (context, url, error) => _buildErrorWidget(),
                     fadeInDuration: Duration.zero,
@@ -57,7 +56,7 @@ class ImageMessageBubble extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          color: kDarkGray,
+       //   color: kDarkGray,
           height: 200,
           width: 200,
         ),
@@ -67,7 +66,7 @@ class ImageMessageBubble extends StatelessWidget {
               height: 25,
               width: 25,
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(kCoolLightGreenBlue),
+                /*valueColor: AlwaysStoppedAnimation(kCoolLightGreenBlue),*/
                 strokeWidth: 4.0,
               ),
             ),
@@ -81,7 +80,7 @@ class ImageMessageBubble extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          color: kDarkGray,
+       //   color: kDarkGray,
           height: 150,
           width: 200,
         ),
@@ -90,8 +89,8 @@ class ImageMessageBubble extends StatelessWidget {
               child: InkWell(
             onTap: () {},
             child: Icon(
-              MaterialIcons.error,
-              color: kErrorRed,
+              Icons.error,
+             // color: kErrorRed,
             ),
           )),
         )
@@ -99,14 +98,14 @@ class ImageMessageBubble extends StatelessWidget {
     );
   }
 
-  _onPhotoClicked(context, String imageUrl) {
+  _onPhotoClicked(context, String? imageUrl) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => GalleryPhotoViewWrapper(
           galleryItems: [GalleryItem(id: Uuid().v4(), resource: imageUrl)],
           backgroundDecoration: const BoxDecoration(
-            color: Colors.black,
+           // color: Colors.black,
           ),
           initialIndex: 0,
           scrollDirection: Axis.horizontal,

@@ -8,8 +8,8 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'message_provider.dart';
 
 class ParseServerMessageProvider implements MessageProvider {
-  DateTime newestMessageCreatedAt;
-  DateTime oldestMessageCreatedAt;
+  DateTime? newestMessageCreatedAt;
+  DateTime? oldestMessageCreatedAt;
 
   final String className;
   final String roomId;
@@ -20,7 +20,7 @@ class ParseServerMessageProvider implements MessageProvider {
   Future<Message> sendMessage(Message message) async {
     await Future.delayed(Duration(seconds: 3));
     try {
-      ParseMessage parseMessage = message;
+      ParseMessage parseMessage = message as ParseMessage;
       var response = await parseMessage.save();
 
       if (response.success) {
@@ -36,7 +36,7 @@ class ParseServerMessageProvider implements MessageProvider {
   @override
   Future<List<Message>> fetchInitialMessages() async {
     try {
-      List<Message> messages = List();
+      List<Message> messages = [];
 
       var queryBuilder = QueryBuilder<ParseMessage>(ParseMessage(className))
         ..whereEqualTo("roomId", roomId)
@@ -45,24 +45,24 @@ class ParseServerMessageProvider implements MessageProvider {
 
       var response = await queryBuilder.query();
 
-      if (response.success) {
-        if (response.results == null || response.results.length == 0) {
-          return messages;
-        }
-
-        for (ParseMessage message in response.results) {
-          messages.add(message);
-          print('In Initial messages');
-          print(response.results);
-        }
-
-        newestMessageCreatedAt = messages[0].createdAt;
-        oldestMessageCreatedAt = messages[messages.length - 1].createdAt;
-
-        return messages;
-      } else {
-        throw response.error.message;
+      if (!response.success) {
+        throw response.error?.message ?? "Error in Response!!";
       }
+      if (response.results?.length == 0) {
+        return messages;
+      }
+
+      print('Initial messages:');
+      for (ParseMessage message in response.results!) {
+        messages.add(message);
+        print(message);
+      }
+
+      newestMessageCreatedAt = messages.first.createdAt as DateTime?;
+      oldestMessageCreatedAt = messages.last.createdAt as DateTime?;
+
+      return messages;
+
     } catch (e) {
       throw e;
     }
@@ -71,7 +71,7 @@ class ParseServerMessageProvider implements MessageProvider {
   @override
   Future<List<Message>> fetchOldMessages() async {
     try {
-      List<Message> messages = List();
+      List<Message> messages = [];
 
       var queryBuilder = QueryBuilder<ParseMessage>(ParseMessage(className))
         ..whereEqualTo("roomId", roomId)
@@ -81,23 +81,24 @@ class ParseServerMessageProvider implements MessageProvider {
 
       var response = await queryBuilder.query();
 
-      if (response.success) {
-        if (response.results == null) {
-          return messages;
-        }
-
-        for (Message message in response.results) {
-          messages.add(message);
-        }
-
-        if (messages.length != 0) {
-          oldestMessageCreatedAt = messages[messages.length - 1].createdAt;
-        }
-
-        return messages;
-      } else {
-        throw response.error.message;
+      if (!response.success) {
+        throw response.error?.message ?? "Error in Response";
       }
+
+      if (response.results?.length == 0) {
+        return messages;
+      }
+
+      for (Message message in response.results!) {
+        messages.add(message);
+      }
+
+      if (messages.length != 0) {
+        oldestMessageCreatedAt = messages.last.createdAt as DateTime?;
+      }
+
+      return messages;
+
     } catch (e) {
       throw e;
     }
@@ -144,14 +145,14 @@ class ParseServerMessageProvider implements MessageProvider {
   }
 
   @override
-  String getFileUrl(Object contentFile) {
-    ParseFile parseFile = contentFile as ParseFile;
+  String? getFileUrl(Object? contentFile) {
+    ParseFile? parseFile = contentFile as ParseFile?;
     return parseFile?.url;
   }
 
   @override
-  Future<Object> getFileObject(File uploadFile) async {
-    ParseFile parseFile = ParseFile(uploadFile);
+  Future<Object> getFileObject(File? uploadFile) async {
+    ParseFile parseFile = ParseFile(uploadFile!);
     return parseFile;
   }
 

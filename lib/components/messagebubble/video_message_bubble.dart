@@ -3,14 +3,13 @@ import 'package:chatscreen/models/message.dart';
 import 'package:chatscreen/models/message_status.dart';
 import 'package:chatscreen/providers/message_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../constants.dart';
 
 class VideoMessageBubble extends StatelessWidget {
-  final Message message;
-  final bool isFromSignedInUser;
-  final MessageProvider messageProvider;
+  final Message? message;
+  final bool? isFromSignedInUser;
+  final MessageProvider? messageProvider;
 
   VideoMessageBubble({
     this.message,
@@ -20,7 +19,7 @@ class VideoMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String videoUrl = messageProvider.getFileUrl(message.contentFile);
+    final String? videoUrl = messageProvider!.getFileUrl(message!.contentFile);
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ClipRRect(
@@ -31,18 +30,18 @@ class VideoMessageBubble extends StatelessWidget {
             children: <Widget>[
               ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: 150),
-                child: message.videoThumbnail != null
-                    ? Image.memory(message.videoThumbnail)
+                child: message!.videoThumbnail != null
+                    ? Image.memory(message!.videoThumbnail!)
                     : Container(
                         height: 150,
                         width: 250,
-                        color: kDarkGray,
+                       // color: kDarkGray,
                       ),
               ),
               Positioned.fill(
                 child: Center(
                   child: Icon(
-                    AntDesign.play,
+                    Icons.play_arrow,
                     size: 50,
                     color: Colors.white,
                   ),
@@ -55,9 +54,9 @@ class VideoMessageBubble extends StatelessWidget {
     );
   }
 
-  void showVideoPlayer(parentContext, String videoUrl) async {
-    if (message.messageStatus != null &&
-        message.messageStatus != MessageStatus.SUCCESS) {
+  void showVideoPlayer(parentContext, String? videoUrl) async {
+    if (message!.messageStatus != null &&
+        message!.messageStatus != MessageStatus.SUCCESS) {
       return;
     }
     await showModalBottomSheet(
