@@ -23,7 +23,7 @@ class VideoMessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(8),
         child: GestureDetector(
           onTap: () => showVideoPlayer(context, videoUrl),
           child: Stack(
@@ -31,19 +31,29 @@ class VideoMessageBubble extends StatelessWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: 150),
                 child: message!.videoThumbnail != null
-                    ? Image.memory(message!.videoThumbnail!)
-                    : Container(
+                    ? Image.memory(
+                        message!.videoThumbnail!,
                         height: 150,
                         width: 250,
-                       // color: kDarkGray,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        color: Colors.grey.shade200,
+                        height: 150,
+                        width: 250,
+                        // color: kDarkGray,
                       ),
               ),
               Positioned.fill(
-                child: Center(
-                  child: Icon(
-                    Icons.play_arrow,
-                    size: 50,
-                    color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(48.0),
+                  child: FloatingActionButton(
+                    onPressed: () => showVideoPlayer(context, videoUrl),
+                    child: Icon(
+                      Icons.play_arrow,
+                      size: 50,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               )

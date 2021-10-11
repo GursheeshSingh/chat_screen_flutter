@@ -35,70 +35,67 @@ class BubbleWrapper extends StatelessWidget {
       backgroundColor: Colors.transparent,
     );
 
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SizedBox(width: 4),
-        isFromSignedInUser == false && showOtherUserProfilePicture!
-            ? avatar
-            : SizedBox.shrink(),
         Column(
           crossAxisAlignment: isFromSignedInUser
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: <Widget>[
-            Visibility(
-              visible: isFromSignedInUser == false &&
-                  message.fromName != null &&
-                  showOtherUserName!,
-              child: Container(
-                margin: EdgeInsets.only(left: 8),
-                child: Text(
-                  message.fromName!,
-                  style: TextStyle(
-                      /*color: kDarkGray,*/ fontSize: kMessageNameSize),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: isFromSignedInUser &&
-                  currentUserName != null &&
-                  showCurrentUserName!,
-              child: Container(
-                margin: EdgeInsets.only(right: 16),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  currentUserName!,
-                  style: TextStyle(
-                      /*color: kDarkGray,*/ fontSize: kMessageNameSize),
-                ),
-              ),
-            ),
-            Transform(
-              transform:
-                  Matrix4.translationValues(isFromSignedInUser ? 60 : 0, 0, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  child,
-                  SizedBox(width: 8),
-                  Visibility(
-                    visible: isFromSignedInUser,
+            Row(
+              mainAxisAlignment: isFromSignedInUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+              children: [
+                SizedBox(width: 4),
+                isFromSignedInUser == false && showOtherUserProfilePicture!
+                    ? avatar
+                    : SizedBox.shrink(),
+                Visibility(
+                  visible: isFromSignedInUser == false &&
+                      message.fromName != null &&
+                      showOtherUserName!,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8,right: 16),
                     child: Text(
-                      message.createdAt != null
-                          ? DateFormat("hh:mm aaa")
-                              .format(message.createdAt as DateTime)
-                          : "--:-- --",
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1!
-                          .copyWith(fontSize: 14),
+                      message.fromName!,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: kMessageNameSize),
                     ),
                   ),
-                  SizedBox(width: 4),
-                ],
-              ),
+                ),
+                Visibility(
+                  visible: isFromSignedInUser &&
+                      currentUserName != null &&
+                      showCurrentUserName!,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 16),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      currentUserName!,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: kMessageNameSize),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(
+                    message.createdAt != null
+                        ? DateFormat("hh:mm aaa")
+                        .format(message.createdAt
+                    as DateTime)
+                        : "--:-- --",
+                    style: TextStyle(
+                      /*color: kDarkGray,*/ fontSize: kMessageNameSize/1.2),
+                  ),
+                ),
+              ],
             ),
+            child,
           ],
         ),
         isFromSignedInUser && showCurrentUserProfilePicture!

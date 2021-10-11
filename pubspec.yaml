@@ -17,13 +17,12 @@ dependencies:
   image_picker:
   bubble:
   intl:
-
-  cached_network_image:
+  flutter_link_previewer:
+  fancy_shimmer_image:
   photo_view:
   video_player:
   uuid:
   parse_server_sdk:
-
   firebase_core:
   cloud_firestore:
   firebase_database:

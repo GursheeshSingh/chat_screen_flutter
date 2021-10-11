@@ -198,7 +198,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
     Permission cameraPermission = Permission.camera;
 
     bool isPermissionGranted = await checkPermission(
-        cameraPermission, "Cameara permission is needed to click photos");
+        cameraPermission, "Camera permission is needed to click photos");
 
     print('Is camera permission granted: ' + isPermissionGranted.toString());
 
@@ -213,7 +213,7 @@ class _AddAttachmentModalSheetState extends State<AddAttachmentModalSheet> {
     );
 
     if (video != null) {
-      print('Video seleceted');
+      print('Video selected');
     }
   }
 
