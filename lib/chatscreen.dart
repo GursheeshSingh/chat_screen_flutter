@@ -2,6 +2,7 @@ library chatscreen;
 
 import 'dart:io';
 
+import 'package:bubble/bubble.dart';
 import 'package:chatscreen/components/messagebubble/bubble_wrapper.dart';
 import 'package:chatscreen/components/messagebubble/text_bubbles/simple_text_message_bubble.dart';
 import 'package:chatscreen/providers/message_provider.dart';
@@ -92,13 +93,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: MyAppBar().build(
         context,
         showShareButton: widget.showShareButton,
         onShareClicked: widget.onShareClicked,
       ),
-     // backgroundColor: kLightGray,
+      // backgroundColor: kLightGray,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       controller: _controller,
                       onLoading: _onLoading,
                       child: GestureDetector(
-                        onHorizontalDragUpdate: (e) {
+                        /*  onHorizontalDragUpdate: (e) {
                           if (x < -55) {
                             return;
                           }
@@ -122,7 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                         onHorizontalDragEnd: (e) {
                           x = 0;
-                        },
+                        },*/
                         child: ListView(
                           reverse: true,
                           children: List.generate(messages!.length, (index) {
@@ -139,40 +141,63 @@ class _ChatScreenState extends State<ChatScreen> {
                                 Transform(
                                   transform: Matrix4.translationValues(
                                       isFromSignedInUser ? x : 0, 0, 0),
-                                  child: BubbleWrapper(
-                                    isFromSignedInUser: isFromSignedInUser,
-                                    message: message,
-                                    currentUserName: widget.currentUserName,
-                                    showCurrentUserName:
-                                        widget.showCurrentUserName,
-                                    showCurrentUserProfilePicture:
-                                        widget.showCurrentUserProfilePicture,
-                                    showOtherUserName: widget.showOtherUserName,
-                                    showOtherUserProfilePicture:
-                                        widget.showOtherUserProfilePicture,
-                                    child: message.contentType ==
-                                            ContentType.text.toString()
-                                        ? SimpleTextMessageBubble(
-                                            message: message,
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        maxWidth: size.width * 3 / 4),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Bubble(
+                                        margin: BubbleEdges.only(top: 10),
+                                        nip: isFromSignedInUser
+                                            ? BubbleNip.rightTop
+                                            : BubbleNip.leftTop,
+                                        color: isFromSignedInUser
+                                            ? Color.fromRGBO(212, 234, 244, 1.0)
+                                            : Colors.grey.shade200,
+                                        stick: true,
+                                        child: ClipRRect(
+                                          child: BubbleWrapper(
                                             isFromSignedInUser:
                                                 isFromSignedInUser,
-                                          )
-                                        : message.contentType ==
-                                                ContentType.image.toString()
-                                            ? ImageMessageBubble(
-                                                message: message,
-                                                isFromSignedInUser:
-                                                    isFromSignedInUser,
-                                                messageProvider:
-                                                    widget.messageProvider,
-                                              )
-                                            : VideoMessageBubble(
-                                                message: message,
-                                                isFromSignedInUser:
-                                                    isFromSignedInUser,
-                                                messageProvider:
-                                                    widget.messageProvider,
-                                              ),
+                                            message: message,
+                                            currentUserName:
+                                                widget.currentUserName,
+                                            showCurrentUserName:
+                                                widget.showCurrentUserName,
+                                            showCurrentUserProfilePicture: widget
+                                                .showCurrentUserProfilePicture,
+                                            showOtherUserName:
+                                                widget.showOtherUserName,
+                                            showOtherUserProfilePicture: widget
+                                                .showOtherUserProfilePicture,
+                                            child: message.contentType ==
+                                                    ContentType.text.toString()
+                                                ? SimpleTextMessageBubble(
+                                                    message: message,
+                                                    isFromSignedInUser:
+                                                        isFromSignedInUser,
+                                                  )
+                                                : message.contentType ==
+                                                        ContentType.image
+                                                            .toString()
+                                                    ? ImageMessageBubble(
+                                                        message: message,
+                                                        isFromSignedInUser:
+                                                            isFromSignedInUser,
+                                                        messageProvider: widget
+                                                            .messageProvider,
+                                                      )
+                                                    : VideoMessageBubble(
+                                                        message: message,
+                                                        isFromSignedInUser:
+                                                            isFromSignedInUser,
+                                                        messageProvider: widget
+                                                            .messageProvider,
+                                                      ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 Visibility(
@@ -185,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       height: 15,
                                       width: 15,
                                       child: CircularProgressIndicator(
-                                      /*  valueColor: AlwaysStoppedAnimation(
+                                        /*  valueColor: AlwaysStoppedAnimation(
                                             kCoolLightGreenBlue),*/
                                         strokeWidth: 4.0,
                                       ),
@@ -202,7 +227,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       onTap: () {},
                                       child: Icon(
                                         Icons.error,
-                                       color: Theme.of(context).errorColor,
+                                        color: Theme.of(context).errorColor,
                                       ),
                                     ),
                                   ),
@@ -218,7 +243,7 @@ class _ChatScreenState extends State<ChatScreen> {
               margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               padding: EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-             //   color: Colors.white,
+                //   color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -233,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       style: TextStyle(
                         fontFamily: kFontFamily,
-                      //  color: kCoolBlack,
+                        //  color: kCoolBlack,
                         fontSize: 18,
                       ),
                       decoration: kMessageTextFieldDecoration,
@@ -254,12 +279,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Container(
                       margin: EdgeInsets.only(right: 16),
                       child: CircleAvatar(
-                       // backgroundColor: kCoolLightGreenBlue,
+                        // backgroundColor: kCoolLightGreenBlue,
                         radius: 20,
                         child: Center(
                           child: Icon(
                             Icons.send,
-                          //  color: Colors.white,
+                            //  color: Colors.white,
                           ),
                         ),
                       ),
@@ -330,7 +355,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<List<Message?>> loadOldMessages() async {
-    List<Message?> oldMessages = await widget.messageProvider.fetchOldMessages();
+    List<Message?> oldMessages =
+        await widget.messageProvider.fetchOldMessages();
     this.messages!.addAll(oldMessages);
     setState(() {});
     loadVideoThumbnails(oldMessages);
