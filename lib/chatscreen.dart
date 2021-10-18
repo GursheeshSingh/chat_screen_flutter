@@ -97,6 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: MyAppBar().build(
         context,
+        heading: 'Chatting',
         showShareButton: widget.showShareButton,
         onShareClicked: widget.onShareClicked,
       ),

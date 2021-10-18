@@ -24,6 +24,7 @@ class _SimpleTextMessageBubbleState extends State<SimpleTextMessageBubble> {
   @override
   Widget build(BuildContext context) {
     return LinkPreview(
+      padding: EdgeInsets.only(top: 6),
       enableAnimation: true,
       onPreviewDataFetched: (data) {
         setState(() {

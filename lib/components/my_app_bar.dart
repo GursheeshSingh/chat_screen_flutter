@@ -16,6 +16,7 @@ class MyAppBar {
             )
           : SizedBox.shrink(),
       actions: <Widget>[
+        if(showShareButton ?? false)
         Container(
           margin: EdgeInsets.only(right: 16),
           child: GestureDetector(

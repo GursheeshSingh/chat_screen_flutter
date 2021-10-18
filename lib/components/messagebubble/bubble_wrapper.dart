@@ -44,6 +44,7 @@ class BubbleWrapper extends StatelessWidget {
               : CrossAxisAlignment.start,
           children: <Widget>[
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: isFromSignedInUser ? MainAxisAlignment.end : MainAxisAlignment.start,
               children: [
                 SizedBox(width: 4),
