@@ -49,6 +49,7 @@ class TestChatView extends StatelessWidget {
                   currentUserName: 'UserName',
                   // showCurrentUserName: true,
                   //  showOtherUserName: true,
+                  showShareButton: false,
                 ),
               ),
             );
